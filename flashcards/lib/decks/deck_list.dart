@@ -1,21 +1,30 @@
 import 'package:flashcards/Listeners/add_new_element.dart';
+import 'package:flashcards/database/connection/database_helper.dart';
+import 'package:flashcards/database/models/decks.dart';
 import 'package:flashcards/decks/deck_add_card.dart';
 //import 'package:flashcards/template/deck_input.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class DeckList extends StatefulWidget {
-  DeckListState createState() => new DeckListState();
+  int id;
+  DeckList(this.id);
+  DeckListState createState() => new DeckListState(id);
 }
 
 class DeckListState extends State<DeckList>
     with SingleTickerProviderStateMixin {
+  int _id;
+  DeckListState(this._id);
   FlutterToast ft;
   TextEditingController listAdd = TextEditingController();
   List<String> _to_be_shown = [];
   AnimationController _controller;
   Animation<double> _changeHeight;
+  DatabaseHelper databaseHelper = DatabaseHelper();
   int _selected = 0;
+  int _check;
+  List<Decks> deckList;
 
   void _showToast() {
     ft.showToast(
@@ -41,9 +50,15 @@ class DeckListState extends State<DeckList>
     );
   }
 
-  void addToList() {
+  void addToList() async {
+    _to_be_shown.clear();
+    deckList = await databaseHelper.getDeckList(_id);
+    deckList.map((item) => _to_be_shown.insert(0, item.deckName)).toList();
+    print("length is : ${_to_be_shown.length}");
+    // deckList
+    //     .map((item) => print({item.deckName, item.id, item.deckNumber}))
+    //     .toList();
     setState(() {
-      _to_be_shown.insert(0, listAdd.text);
       _selected = 0;
       listAdd.clear();
     });
@@ -89,12 +104,18 @@ class DeckListState extends State<DeckList>
                         suffixIcon: IconButton(
                             icon: Icon(Icons.save),
                             onPressed: () {
-                              Future.delayed(Duration(milliseconds: 50), () {
+                              Future.delayed(Duration(milliseconds: 50),
+                                  () async {
                                 FocusScopeNode cF = FocusScope.of(context);
 
                                 if (!cF.hasPrimaryFocus) {
                                   cF.unfocus();
                                 }
+
+                                print("List value is: ${listAdd.text}");
+                                _check = await databaseHelper
+                                    .insertDeck(Decks(listAdd.text, _id));
+                                print("check value is : $_check");
                                 addToList();
                               });
                             })),
@@ -122,6 +143,8 @@ class DeckListState extends State<DeckList>
                       shrinkWrap: true,
                       itemCount: _to_be_shown.length,
                       itemBuilder: (BuildContext context, int i) {
+                        // print(i);
+                        // print(_to_be_shown.length);
                         // return InkWell(
                         //   onTap: () => print("pressed"),
                         return ListTile(

@@ -5,10 +5,13 @@ import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 
 class Answer extends StatelessWidget {
-  String send;
-  int i;
+  // List<String> _answers = ["A", "B", "C", "D", "E", "F", "G"];
+  // List<int> _confidence = [0, 2, 3, 1, 2, 2, 3];
+  List<String> _answers;
+  List<int> _confidence;
   int _flag = 1;
-  Answer(this.send, this.i);
+  int i = 0;
+  Answer(this._answers, this._confidence);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -26,7 +29,7 @@ class Answer extends StatelessWidget {
                     Expanded(
                         child: Center(
                       child: Text(
-                        send,
+                        _answers[0],
                         textAlign: TextAlign.center,
                       ),
                     )),
@@ -35,23 +38,27 @@ class Answer extends StatelessWidget {
                       Expanded(
                           child: RaisedButton(
                               onPressed: () {
-                                RenderNextElement(flag: _flag)
-                                  ..dispatch(context);
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            FaceCard()));
+                                _answers.removeAt(0);
+                                _confidence[i] = 3;
+                                // RenderNextElement(flag: _flag)
+                                //   ..dispatch(context);
+                                Navigator.pop(context);
+                                print("going back");
                               },
                               child: Text("Bad"))),
                       Expanded(
                           child: RaisedButton(
                               onPressed: () {
+                                _answers.removeAt(0);
+                                _confidence[i] = 2;
                                 RenderNextElement(flag: 1)..dispatch(context);
                               },
                               child: Text("Ok"))),
                       Expanded(
                           child: RaisedButton(
                               onPressed: () {
+                                _answers.removeAt(0);
+                                _confidence[i] = 1;
                                 RenderNextElement(flag: 1)..dispatch(context);
                               },
                               child: Text("Good")))
