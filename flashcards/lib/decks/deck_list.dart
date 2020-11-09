@@ -54,6 +54,7 @@ class DeckListState extends State<DeckList>
     _to_be_shown.clear();
     deckList = await databaseHelper.getDeckList(_id);
     deckList.map((item) => _to_be_shown.insert(0, item.deckName)).toList();
+
     print("length is : ${_to_be_shown.length}");
     // deckList
     //     .map((item) => print({item.deckName, item.id, item.deckNumber}))
@@ -143,11 +144,11 @@ class DeckListState extends State<DeckList>
                       shrinkWrap: true,
                       itemCount: _to_be_shown.length,
                       itemBuilder: (BuildContext context, int i) {
-                        // print(i);
-                        // print(_to_be_shown.length);
-                        // return InkWell(
-                        //   onTap: () => print("pressed"),
+                        print(i);
                         return ListTile(
+                            onTap: () {
+                              print(i);
+                            },
                             leading: Icon(Icons.list),
                             trailing: Icon(Icons.auto_awesome),
                             title: Text('${_to_be_shown[i]}'));

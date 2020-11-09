@@ -1,10 +1,9 @@
-import 'package:flashcards/cards/new_card_back.dart';
+import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
 
-class NewCard extends StatelessWidget {
+class NewCardBack extends StatelessWidget {
   void translation(String input) async {
     final translator = GoogleTranslator();
     //String input = "Je m'appelle rohan";
@@ -14,14 +13,14 @@ class NewCard extends StatelessWidget {
   }
 
   TextEditingController _cardAdd = TextEditingController();
-
+  DatabaseHelper databaseHelper = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    // print(height);
-    // print(width);
-    // print((height - 30) / 10);
+    print(height);
+    print(width);
+    print((height - 30) / 10);
     final maxLines = 10;
     // TODO: implement build
     return Scaffold(
@@ -50,41 +49,7 @@ class NewCard extends StatelessWidget {
               controller: _cardAdd,
             ),
           ),
-          // Container(
-          // margin: EdgeInsets.all(12),
-          //  height: (MediaQuery.of(context).size.height+100) / 2,
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 40, right: 40, top: 100),
-          //   child: TextField(
-          //     maxLines: maxLines,
-          //     decoration: InputDecoration(
-          //       border: InputBorder.none,
-          //       focusedBorder: InputBorder.none,
-          //       enabledBorder: InputBorder.none,
-          //       errorBorder: InputBorder.none,
-          //       disabledBorder: InputBorder.none,
-          //       hintText: "Enter a message",
-          //       fillColor: Colors.teal[100],
-          //       filled: true,
-          //     ),
-          //     controller: _cardAdd,
-          //   ),
-          // ),
 
-          // Row(
-          //   children: [
-          //     RaisedButton(
-          //       onPressed: () {},
-          //       child: Text("Search Dictionary"),
-          //     ),
-          //     RaisedButton(
-          //       onPressed: () {
-          //         translation(_cardAdd.text);
-          //       },
-          //       child: Text("Translate"),
-          //     )
-          //   ],
-          // ),
           Spacer(),
           SizedBox(
               height: 60,
@@ -93,16 +58,8 @@ class NewCard extends StatelessWidget {
                   child: RaisedButton(
                     color: Colors.teal[300],
                     splashColor: Colors.teal,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.fade,
-                          child: NewCardBack(),
-                        ),
-                      );
-                    },
-                    child: Text('Flip'),
+                    onPressed: () {},
+                    child: Text('Save Card'),
                   )))
         ]));
   }

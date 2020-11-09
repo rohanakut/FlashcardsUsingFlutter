@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
     //return new MaterialApp(home: ToDoList());
     //return new MaterialApp(home: FaceCard(_questions, _answers, _confidence));
     //return new MaterialApp(home: ShowCards(_questions));
-    //return new MaterialApp(home: LoginPage());
+    return new MaterialApp(home: LoginPage());
     //return new MaterialApp(home: LoadedValues());
-    return new MaterialApp(home: NewCard());
+    // return new MaterialApp(home: NewCard());
   }
 }
 
