@@ -5,6 +5,8 @@ import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
 
 class NewCard extends StatelessWidget {
+  int _deckNum;
+  NewCard(this._deckNum);
   void translation(String input) async {
     final translator = GoogleTranslator();
     //String input = "Je m'appelle rohan";
@@ -98,9 +100,11 @@ class NewCard extends StatelessWidget {
                         context,
                         PageTransition(
                           type: PageTransitionType.fade,
-                          child: NewCardBack(),
+                          child: NewCardBack(_deckNum, _cardAdd.text),
                         ),
-                      );
+                      ).then((value) {
+                        Navigator.pop(context);
+                      });
                     },
                     child: Text('Flip'),
                   )))

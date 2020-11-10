@@ -1,10 +1,12 @@
 import 'package:flashcards/Listeners/add_new_element.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/decks.dart';
+import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/decks/deck_add_card.dart';
 //import 'package:flashcards/template/deck_input.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:page_transition/page_transition.dart';
 
 class DeckList extends StatefulWidget {
   int id;
@@ -54,7 +56,7 @@ class DeckListState extends State<DeckList>
     _to_be_shown.clear();
     deckList = await databaseHelper.getDeckList(_id);
     deckList.map((item) => _to_be_shown.insert(0, item.deckName)).toList();
-
+    _to_be_shown = _to_be_shown.reversed.toList();
     print("length is : ${_to_be_shown.length}");
     // deckList
     //     .map((item) => print({item.deckName, item.id, item.deckNumber}))
@@ -65,6 +67,12 @@ class DeckListState extends State<DeckList>
     });
   }
 
+  Future<List<Decks>> loadList() async {
+    deckList = await databaseHelper.getDeckList(_id);
+    // deckList.map((item) => _to_be_shown.insert(0, item.deckName)).toList();
+    // _to_be_shown = _to_be_shown.reversed.toList();
+  }
+
   void changeAnimation() {
     setState(() {
       _selected = 1;
@@ -73,14 +81,18 @@ class DeckListState extends State<DeckList>
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement initState()
     super.initState();
+    loadList().then((value) {
+      deckList.map((item) => _to_be_shown.insert(0, item.deckName)).toList();
+      _to_be_shown = _to_be_shown.reversed.toList();
+    });
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 3));
     _changeHeight = Tween<double>(begin: 0, end: 60).animate(_controller);
     _changeHeight.addListener(() {
       setState(() {
-        print(_changeHeight.value.toString());
+        //  print(_changeHeight.value.toString());
       });
     });
     _controller.forward();
@@ -144,10 +156,17 @@ class DeckListState extends State<DeckList>
                       shrinkWrap: true,
                       itemCount: _to_be_shown.length,
                       itemBuilder: (BuildContext context, int i) {
-                        print(i);
+                        //print(i);
                         return ListTile(
                             onTap: () {
                               print(i);
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.fade,
+                                  child: ShowCards(i + 1),
+                                ),
+                              );
                             },
                             leading: Icon(Icons.list),
                             trailing: Icon(Icons.auto_awesome),

@@ -1,9 +1,20 @@
 import 'package:flashcards/database/connection/database_helper.dart';
+import 'package:flashcards/database/models/cards.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
 
 class NewCardBack extends StatelessWidget {
+  String _question;
+  int _deckNum, _check;
+  NewCardBack(this._deckNum, this._question);
+
+  void _addCard(String _answer) async {
+    _check =
+        await databaseHelper.insertCard(Cards(_question, _answer, _deckNum));
+    print(_check);
+  }
+
   void translation(String input) async {
     final translator = GoogleTranslator();
     //String input = "Je m'appelle rohan";
@@ -58,7 +69,13 @@ class NewCardBack extends StatelessWidget {
                   child: RaisedButton(
                     color: Colors.teal[300],
                     splashColor: Colors.teal,
-                    onPressed: () {},
+                    onPressed: () {
+                      print("question is: $_question");
+                      print(_deckNum);
+                      print("answer is: ${_cardAdd.text}");
+                      _addCard(_cardAdd.text);
+                      Navigator.pop(context);
+                    },
                     child: Text('Save Card'),
                   )))
         ]));

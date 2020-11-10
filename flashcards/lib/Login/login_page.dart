@@ -90,10 +90,10 @@ class LoginPageState extends State<LoginPage> {
                           _userAdd.text, _pwdAdd.text);
 
                       //loginList = databaseHelper.getNoteList();
-                      print("value is ${check[0]['id']}");
-                      print("length is ${check.length}");
+                      // print("value is ${check[0]['id']}");
+                      // print("length is ${check.length}");
 
-                      _form.currentState.validate();
+                      // _form.currentState.validate();
                       if (check.length != 0) {
                         Navigator.push(
                           context,
@@ -102,7 +102,7 @@ class LoginPageState extends State<LoginPage> {
                             child: DeckList(check[0]['id']),
                           ),
                         );
-                      } else if (check == -1) {
+                      } else if (check.length <= 0) {
                         _userAdd.clear();
                         _pwdAdd.clear();
                         _form.currentState.validate();

@@ -115,14 +115,14 @@ class DatabaseHelper {
   Future<int> insertCard(Cards card) async {
     Database db = await this.database;
     var result;
-    try {
-      result = await db.insert(tableName2, card.toMap());
-      //result = await db.rawQuery("INSERT ");
-    } on Exception catch (_) {
-      result = -1;
-      // print(e);
-    }
-    // result = await db.insert(tableName1, deck.toMap());
+    // try {
+    //   result = await db.insert(tableName2, card.toMap());
+    //   //result = await db.rawQuery("INSERT ");
+    // } on Exception catch (_) {
+    //   result = -1;
+    //   // print(e);
+    // }
+    result = await db.insert(tableName2, card.toMap());
     return result;
   }
 
@@ -186,13 +186,29 @@ class DatabaseHelper {
   Future<List<Cards>> getCardList(int id) async {
     var cardMapList = await getCardMapList(id);
     int count = cardMapList.length;
+    print("card list is $cardMapList");
+    List<Cards> cardList = List<Cards>();
+    // For loop to create a 'Note List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      cardList.add(Cards.fromMapObject(cardMapList[i]));
+      print("card list is ${cardList[0].questions}");
+    }
+
+    return cardList;
+  }
+
+  Future<List<Cards>> getCardListForReviw(int id) async {
+    var cardMapList = await getCardMapList(id);
+    int count = cardMapList.length;
+    print("card list is $cardMapList");
 
     List<Cards> cardList = List<Cards>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
       cardList.add(Cards.fromMapObject(cardMapList[i]));
+      print("card list is ${cardList[0].questions}");
     }
-
+    cardList.shuffle();
     return cardList;
   }
 }

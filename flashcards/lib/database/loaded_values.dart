@@ -24,7 +24,7 @@ class LoadedValues extends StatelessWidget {
     //FaceCard(_questions, _answers, _confidence);
     // TODO: implement build
     return new Scaffold(
-        appBar: new AppBar(title: Text("Cards")),
-        body: FaceCard(_questions, _answers, _confidence));
+        appBar: new AppBar(title: Text("Cards")), body: Text("done"));
+    // body: //FaceCard(_questions, _answers, _confidence));
   }
 }

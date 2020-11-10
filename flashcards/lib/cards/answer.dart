@@ -11,7 +11,7 @@ class Answer extends StatelessWidget {
   List<int> _confidence;
   int _flag = 1;
   int i = 0;
-  Answer(this._answers, this._confidence);
+  Answer(this._answers, this.i);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -29,7 +29,7 @@ class Answer extends StatelessWidget {
                     Expanded(
                         child: Center(
                       child: Text(
-                        _answers[0],
+                        _answers[i],
                         textAlign: TextAlign.center,
                       ),
                     )),
@@ -38,18 +38,19 @@ class Answer extends StatelessWidget {
                       Expanded(
                           child: RaisedButton(
                               onPressed: () {
-                                _answers.removeAt(0);
-                                _confidence[i] = 3;
+                                //  _answers.removeAt(0);
+                                //_confidence[i] = 3;
                                 // RenderNextElement(flag: _flag)
                                 //   ..dispatch(context);
-                                Navigator.pop(context);
+                                Navigator.pop(context, 3);
                                 print("going back");
                               },
                               child: Text("Bad"))),
                       Expanded(
                           child: RaisedButton(
                               onPressed: () {
-                                _answers.removeAt(0);
+                                Navigator.pop(context, 2);
+                                // _answers.removeAt(0);
                                 _confidence[i] = 2;
                                 RenderNextElement(flag: 1)..dispatch(context);
                               },
@@ -57,7 +58,8 @@ class Answer extends StatelessWidget {
                       Expanded(
                           child: RaisedButton(
                               onPressed: () {
-                                _answers.removeAt(0);
+                                Navigator.pop(context, 1);
+                                //_answers.removeAt(0);
                                 _confidence[i] = 1;
                                 RenderNextElement(flag: 1)..dispatch(context);
                               },
