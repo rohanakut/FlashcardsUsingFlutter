@@ -51,7 +51,7 @@ class Answer extends StatelessWidget {
                               onPressed: () {
                                 Navigator.pop(context, 2);
                                 // _answers.removeAt(0);
-                                _confidence[i] = 2;
+                                // _confidence[i] = 2;
                                 RenderNextElement(flag: 1)..dispatch(context);
                               },
                               child: Text("Ok"))),
@@ -60,7 +60,7 @@ class Answer extends StatelessWidget {
                               onPressed: () {
                                 Navigator.pop(context, 1);
                                 //_answers.removeAt(0);
-                                _confidence[i] = 1;
+                                // _confidence[i] = 1;
                                 RenderNextElement(flag: 1)..dispatch(context);
                               },
                               child: Text("Good")))
