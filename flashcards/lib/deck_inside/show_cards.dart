@@ -10,16 +10,18 @@ import 'package:page_transition/page_transition.dart';
 class ShowCards extends StatefulWidget {
   List<String> _questions = [];
   int _deckNum;
+  int _id;
   // ShowCards(this._questions);
-  ShowCards(this._deckNum);
-  ShowCardsState createState() => new ShowCardsState(_deckNum);
+  ShowCards(this._deckNum, this._id);
+  ShowCardsState createState() => new ShowCardsState(_deckNum, _id);
 }
 
 class ShowCardsState extends State<ShowCards> {
-  ShowCardsState(this._deckNum);
+  ShowCardsState(this._deckNum, this._id);
   List<String> _questions = [];
-
+  List<String> _answers = [];
   int i;
+  int _id;
   int _deckNum;
   Color _color = Colors.white;
   DatabaseHelper databaseHelper = DatabaseHelper();
@@ -30,13 +32,14 @@ class ShowCardsState extends State<ShowCards> {
       context,
       PageTransition(
         type: PageTransitionType.fade,
-        child: NewCard(_deckNum),
+        child: NewCard(_deckNum, _id),
       ),
     ).then((value) async {
       _questions = [];
       //cardList.clear();
-      cardList = await databaseHelper.getCardList(_deckNum);
+      cardList = await databaseHelper.getCardList(_deckNum, _id);
       cardList.map((item) => _questions.insert(0, item.questions)).toList();
+      cardList.map((item) => _answers.insert(0, item.answers)).toList();
       //print("the rendered list is: $_questions");
       setState(() {});
     });
@@ -44,7 +47,7 @@ class ShowCardsState extends State<ShowCards> {
 
   Future<List<Cards>> loadCards() async {
     print("deck num is $_deckNum");
-    cardList = await databaseHelper.getCardList(_deckNum);
+    cardList = await databaseHelper.getCardList(_deckNum, _id);
     print("length is : ${cardList.length}");
     //cardList.map((item) => _questions.insert(0, item.questions)).toList();
     return cardList;
@@ -132,7 +135,8 @@ class ShowCardsState extends State<ShowCards> {
                                 context,
                                 PageTransition(
                                   type: PageTransitionType.fade,
-                                  child: EditableFaceCard(question, index),
+                                  child: EditableFaceCard(
+                                      question, _deckNum, _id, _answers[index]),
                                 ),
                               ).then((value) {
                                 setState(() {});
@@ -161,7 +165,7 @@ class ShowCardsState extends State<ShowCards> {
                         context,
                         PageTransition(
                           type: PageTransitionType.fade,
-                          child: FaceCard(_deckNum),
+                          child: FaceCard(_deckNum, _id),
                         ),
                       );
                     },

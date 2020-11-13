@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flashcards/database/models/cards.dart';
+import 'package:flashcards/database/models/chart.dart';
 import 'package:flashcards/database/models/decks.dart';
 import 'package:flashcards/database/models/login.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,6 +17,7 @@ class DatabaseHelper {
   String tableName = 'loginTable';
   String tableName1 = 'deckList';
   String tableName2 = 'cardsList';
+  String tableName3 = 'chartList';
   String userId = 'id';
   String userName = 'userName';
   String password = 'pwd';
@@ -56,9 +58,11 @@ class DatabaseHelper {
         'CREATE TABLE $tableName($userId INTEGER PRIMARY KEY AUTOINCREMENT, $userName TEXT UNIQUE, '
         '$password TEXT)');
     await db.execute(
-        "CREATE TABLE $tableName1($deckNumber INTEGER PRIMARY KEY AUTOINCREMENT, deckName TEXT ,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'))");
+        "CREATE TABLE $tableName1($deckNumber INTEGER PRIMARY KEY AUTOINCREMENT, deckName  TEXT NOT NULL ,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'))");
     await db.execute(
-        "CREATE TABLE $tableName2(id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, $deckNumber INTEGER NOT NULL, FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
+        "CREATE TABLE $tableName2(cardid INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, $deckNumber INTEGER NOT NULL,confidence INTEGER NOT NULL,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'), FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
+    await db.execute(
+        "CREATE TABLE $tableName3(chartid INTEGER PRIMARY KEY AUTOINCREMENT, percentage FLOAT NOT NULL,$deckNumber INTEGER NOT NULL,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'), FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
@@ -76,11 +80,19 @@ class DatabaseHelper {
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getCardMapList(int id) async {
+  Future<List<Map<String, dynamic>>> getCardMapList(int id, int uId) async {
     Database db = await this.database;
 
-    var result = await db
-        .rawQuery("SELECT * FROM $tableName2 WHERE $deckNumber = '$id'");
+    var result = await db.rawQuery(
+        "SELECT * FROM $tableName2 WHERE ($deckNumber = '$id' AND $userId == '$uId')");
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getChartMapList(int id, int uId) async {
+    Database db = await this.database;
+
+    var result = await db.rawQuery(
+        "SELECT * FROM $tableName3 WHERE ($deckNumber = '$id' AND $userId == '$uId')");
     return result;
   }
 
@@ -95,6 +107,23 @@ class DatabaseHelper {
       result = -1;
       // print(e);
     }
+    return result;
+  }
+
+  Future<int> updateConfidence(Cards card) async {
+    var db = await this.database;
+    // var result = await db.update(tableName2, card.toMap(),
+    //     where: '$deckNumber = ? and $userId = ?',
+    //     whereArgs: [card.deckNumber, card.id]);
+    var result = await db.rawUpdate(
+        "UPDATE $tableName2 SET CONFIDENCE  = ? WHERE ($deckNumber = ? AND $userId = ? AND question = ? AND answer = ?)",
+        [
+          card.confidence,
+          card.deckNumber,
+          card.id,
+          card.questions,
+          card.answers
+        ]);
     return result;
   }
 
@@ -123,6 +152,20 @@ class DatabaseHelper {
     //   // print(e);
     // }
     result = await db.insert(tableName2, card.toMap());
+    return result;
+  }
+
+  Future<int> insertChart(Chart chart) async {
+    // Directory directory = await getApplicationDocumentsDirectory();
+    // print(directory.path);
+    Database db = await this.database;
+    var result;
+    try {
+      result = await db.insert(tableName3, chart.toMap());
+    } on Exception catch (_) {
+      result = -1;
+      // print(e);
+    }
     return result;
   }
 
@@ -183,8 +226,8 @@ class DatabaseHelper {
     return deckList;
   }
 
-  Future<List<Cards>> getCardList(int id) async {
-    var cardMapList = await getCardMapList(id);
+  Future<List<Cards>> getCardList(int id, int uId) async {
+    var cardMapList = await getCardMapList(id, uId);
     int count = cardMapList.length;
     print("card list is $cardMapList");
     List<Cards> cardList = List<Cards>();
@@ -197,8 +240,8 @@ class DatabaseHelper {
     return cardList;
   }
 
-  Future<List<Cards>> getCardListForReviw(int id) async {
-    var cardMapList = await getCardMapList(id);
+  Future<List<Cards>> getCardListForReviw(int id, int uId) async {
+    var cardMapList = await getCardMapList(id, uId);
     int count = cardMapList.length;
     print("card list is $cardMapList");
 
@@ -210,5 +253,19 @@ class DatabaseHelper {
     }
     cardList.shuffle();
     return cardList;
+  }
+
+  Future<List<Chart>> getChartList(int id, int uId) async {
+    var chartMapList = await getChartMapList(id, uId);
+    int count = chartMapList.length;
+    print("chart list is $chartMapList");
+    List<Chart> chartList = List<Chart>();
+    // For loop to create a 'Note List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      chartList.add(Chart.fromMapObject(chartMapList[i]));
+      print("card list is ${chartList[0].percentage}");
+    }
+
+    return chartList;
   }
 }

@@ -16,6 +16,7 @@ class DeckList extends StatefulWidget {
 
 class DeckListState extends State<DeckList>
     with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
   int _id;
   DeckListState(this._id);
   FlutterToast ft;
@@ -104,77 +105,88 @@ class DeckListState extends State<DeckList>
         appBar: new AppBar(
           title: Text("Deck List"),
         ),
-        body: Column(children: [
-          Container(
-              height: _selected == 0 ? 0 : _changeHeight.value,
-              child: TextField(
-                controller: listAdd,
-                decoration: _selected == 0
-                    ? null
-                    : InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Deck Name',
-                        suffixIcon: IconButton(
-                            icon: Icon(Icons.save),
-                            onPressed: () {
-                              Future.delayed(Duration(milliseconds: 50),
-                                  () async {
-                                FocusScopeNode cF = FocusScope.of(context);
+        body: Form(
+            key: _form,
+            child: Column(children: [
+              Container(
+                  height: _selected == 0 ? 0 : _changeHeight.value,
+                  child: TextFormField(
+                    controller: listAdd,
+                    validator: (val) {
+                      if (listAdd.text.isEmpty) {
+                        return ('Enter some value');
+                      }
+                    },
+                    decoration: _selected == 0
+                        ? null
+                        : InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Deck Name',
+                            suffixIcon: IconButton(
+                                icon: Icon(Icons.save),
+                                onPressed: () {
+                                  Future.delayed(Duration(milliseconds: 50),
+                                      () async {
+                                    FocusScopeNode cF = FocusScope.of(context);
 
-                                if (!cF.hasPrimaryFocus) {
-                                  cF.unfocus();
-                                }
+                                    if (!cF.hasPrimaryFocus) {
+                                      cF.unfocus();
+                                    }
 
-                                print("List value is: ${listAdd.text}");
-                                _check = await databaseHelper
-                                    .insertDeck(Decks(listAdd.text, _id));
-                                print("check value is : $_check");
-                                addToList();
-                              });
-                            })),
-              )),
-          _to_be_shown.length == 0
-              ? Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                      Icon(
-                        Icons.home,
-                        color: Colors.grey[300],
-                        size: 100,
-                      ),
-                      Text("No deck Avalaible",
-                          style: TextStyle(
-                            fontSize: 20,
+                                    print("List value is: ${listAdd.text}");
+                                    if (listAdd.text.isEmpty) {
+                                      _form.currentState.validate();
+                                    } else {
+                                      _check = await databaseHelper
+                                          .insertDeck(Decks(listAdd.text, _id));
+                                      print("check value is : $_check");
+                                      addToList();
+                                    }
+                                  });
+                                })),
+                  )),
+              _to_be_shown.length == 0
+                  ? Center(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                          Icon(
+                            Icons.home,
                             color: Colors.grey[300],
-                          ))
-                    ]))
-              : Expanded(
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: _to_be_shown.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        //print(i);
-                        return ListTile(
-                            onTap: () {
-                              print(i);
-                              Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.fade,
-                                  child: ShowCards(i + 1),
-                                ),
-                              );
-                            },
-                            leading: Icon(Icons.list),
-                            trailing: Icon(Icons.auto_awesome),
-                            title: Text('${_to_be_shown[i]}'));
-                      })
-                  //: List<Widget>
-                  ),
-        ]),
+                            size: 100,
+                          ),
+                          Text("No deck Avalaible",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.grey[300],
+                              ))
+                        ]))
+                  : Expanded(
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: _to_be_shown.length,
+                          itemBuilder: (BuildContext context, int i) {
+                            //print(i);
+                            return ListTile(
+                                onTap: () {
+                                  print(i);
+                                  Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: ShowCards(i + 1, _id),
+                                    ),
+                                  );
+                                },
+                                leading: Icon(Icons.list),
+                                trailing: Icon(Icons.auto_awesome),
+                                title: Text('${_to_be_shown[i]}'));
+                          })
+                      //: List<Widget>
+                      ),
+            ])),
         floatingActionButton: _selected == 1
             ? null
             : new FloatingActionButton(

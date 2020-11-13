@@ -88,6 +88,7 @@ class LoginPageState extends State<LoginPage> {
                       print(_pwdAdd.text);
                       check = await databaseHelper.checkLogin(
                           _userAdd.text, _pwdAdd.text);
+                      print("the reurned length is:${check.length}");
 
                       //loginList = databaseHelper.getNoteList();
                       // print("value is ${check[0]['id']}");

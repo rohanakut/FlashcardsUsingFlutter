@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class EditableFaceCard extends StatelessWidget {
   String question;
-  int i;
-  EditableFaceCard(this.question, this.i);
+  int _id, _deckNum;
+  EditableFaceCard(this.question, this._deckNum, this._id);
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(title: Text("Change Card")),

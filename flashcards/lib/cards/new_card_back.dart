@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 
 class NewCardBack extends StatelessWidget {
   String _question;
-  int _deckNum, _check;
-  NewCardBack(this._deckNum, this._question);
+  int _deckNum, _check, _id;
+  NewCardBack(this._deckNum, this._question, this._id);
 
   void _addCard(String _answer) async {
-    _check =
-        await databaseHelper.insertCard(Cards(_question, _answer, _deckNum));
+    _check = await databaseHelper
+        .insertCard(Cards(_question, _answer, _deckNum, 3, _id));
     print(_check);
   }
 

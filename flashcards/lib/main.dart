@@ -5,7 +5,7 @@ import 'package:flashcards/animation/sliding_animation.dart';
 import 'package:flashcards/cards/answer.dart';
 import 'package:flashcards/cards/face_card.dart';
 import 'package:flashcards/cards/new_card.dart';
-import 'package:flashcards/chart/simple_line_chart.dart';
+import 'package:flashcards/chart/line_chart_widget.dart';
 import 'package:flashcards/database/loaded_values.dart';
 import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/decks/deck_list.dart';
@@ -34,10 +34,10 @@ class MyApp extends StatelessWidget {
     //return new MaterialApp(home: ToDoList());
     //return new MaterialApp(home: FaceCard(_questions, _answers, _confidence));
     //return new MaterialApp(home: ShowCards(_questions));
-    //return new MaterialApp(home: LoginPage());
+    return new MaterialApp(home: LoginPage());
     //return new MaterialApp(home: LoadedValues());
     // return new MaterialApp(home: NewCard());
-    return new MaterialApp(home: LineChartWidget());
+    //return new MaterialApp(home: LineChartWidget());
   }
 }
 
