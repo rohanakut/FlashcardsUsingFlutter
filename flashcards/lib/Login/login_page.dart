@@ -96,7 +96,7 @@ class LoginPageState extends State<LoginPage> {
 
                       // _form.currentState.validate();
                       if (check.length != 0) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
@@ -109,7 +109,7 @@ class LoginPageState extends State<LoginPage> {
                         _form.currentState.validate();
                       }
                     },
-                    child: Text("Press me")),
+                    child: Text("Login")),
                 SizedBox(),
                 RaisedButton(
                   onPressed: () {
@@ -122,7 +122,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                     );
                   },
-                  child: Text("Sign Up"),
+                  child: Text("Create a new Account"),
                 )
               ],
             )));

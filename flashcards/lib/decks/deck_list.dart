@@ -3,6 +3,7 @@ import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/decks.dart';
 import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/decks/deck_add_card.dart';
+import 'package:flashcards/drawer/drawer_for_page.dart';
 //import 'package:flashcards/template/deck_input.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -105,6 +106,7 @@ class DeckListState extends State<DeckList>
         appBar: new AppBar(
           title: Text("Deck List"),
         ),
+        drawer: DrawerForPage(),
         body: Form(
             key: _form,
             child: Column(children: [

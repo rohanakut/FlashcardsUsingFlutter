@@ -80,7 +80,7 @@ class FaceCardState extends State<FaceCard> {
 
         if (_repetitions == 3) {
           _update();
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             PageTransition(
               type: PageTransitionType.fade,

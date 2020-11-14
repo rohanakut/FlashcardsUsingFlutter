@@ -155,6 +155,17 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<int> updateCard(int id, String question, String answer) async {
+    var db = await this.database;
+    // var result = await db.update(tableName2, card.toMap(),
+    //     where: '$deckNumber = ? and $userId = ?',
+    //     whereArgs: [card.deckNumber, card.id]);
+    var result = await db.rawUpdate(
+        "UPDATE $tableName2 SET question = ?,answer=? WHERE (cardid = ?)",
+        [question, answer, id]);
+    return result;
+  }
+
   Future<int> insertChart(Chart chart) async {
     // Directory directory = await getApplicationDocumentsDirectory();
     // print(directory.path);

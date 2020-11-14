@@ -3,6 +3,7 @@ import 'package:flashcards/cards/face_card.dart';
 import 'package:flashcards/cards/new_card.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/cards.dart';
+import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -20,6 +21,7 @@ class ShowCardsState extends State<ShowCards> {
   ShowCardsState(this._deckNum, this._id);
   List<String> _questions = [];
   List<String> _answers = [];
+  List<int> _cardId = [];
   int i;
   int _id;
   int _deckNum;
@@ -40,6 +42,10 @@ class ShowCardsState extends State<ShowCards> {
       cardList = await databaseHelper.getCardList(_deckNum, _id);
       cardList.map((item) => _questions.insert(0, item.questions)).toList();
       cardList.map((item) => _answers.insert(0, item.answers)).toList();
+      cardList.map((item) => _cardId.insert(0, item.cardid)).toList();
+      _questions = _questions.reversed.toList();
+      _answers = _answers.reversed.toList();
+      _cardId = _cardId.reversed.toList();
       //print("the rendered list is: $_questions");
       setState(() {});
     });
@@ -61,7 +67,11 @@ class ShowCardsState extends State<ShowCards> {
         _questions.insert(0, item.questions);
         //  print("in questions is:$_questions");
       }).toList();
+      cardList.map((item) => _answers.insert(0, item.answers)).toList();
+      cardList.map((item) => _cardId.insert(0, item.cardid)).toList();
       _questions = _questions.reversed.toList();
+      _answers = _answers.reversed.toList();
+      _cardId = _cardId.reversed.toList();
       setState(() {});
     });
     //  print("questions is : $_questions");
@@ -79,6 +89,7 @@ class ShowCardsState extends State<ShowCards> {
       appBar: AppBar(
         title: Text("title"),
       ),
+      drawer: DrawerForPage(),
       body: _questions.length == 0
           ? Center(
               child: Column(
@@ -129,14 +140,17 @@ class ShowCardsState extends State<ShowCards> {
                                           .headline5))),
                           onTap: () {
                             setState(() {
+                              print("index is: $index");
+                              print("answer is: ${_answers[index]}");
+                              print("cardid is: ${_cardId[index]}");
                               // print("$question");
                               //  print("$index");
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 PageTransition(
                                   type: PageTransitionType.fade,
-                                  child: EditableFaceCard(
-                                      question, _deckNum, _id, _answers[index]),
+                                  child: EditableFaceCard(question, _deckNum,
+                                      _id, _answers[index], _cardId[index]),
                                 ),
                               ).then((value) {
                                 setState(() {});
