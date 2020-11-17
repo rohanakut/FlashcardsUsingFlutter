@@ -1,5 +1,6 @@
 import 'package:flashcards/cards/editable_answer_card.dart';
 import 'package:flashcards/cards/editable_new_face_card.dart';
+import 'package:flashcards/chart/line_chart_widget.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,31 +8,33 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flashcards/database/models/cards.dart';
+import 'package:flashcards/chart/line_chart_widget.dart';
+import 'package:flashcards/database/models/chart.dart';
 
-class EditableFaceCard extends StatefulWidget {
-  String question, answer;
-  int _id, _deckNum, _cardId;
-  EditableFaceCard(
-      this.question, this._deckNum, this._id, this.answer, this._cardId);
-  EditableFaceCardState createState() =>
-      new EditableFaceCardState(question, _deckNum, _id, answer, _cardId);
+class FlipFaceCard extends StatefulWidget {
+  List<String> _questions;
+  List<String> _answers;
+  List<int> _confidence;
+  int _deckNum;
+  int _id;
+  FlipFaceCard(this._deckNum, this._id);
+  FlipFaceCardState createState() => new FlipFaceCardState(_deckNum, _id);
 }
 
-class EditableFaceCardState extends State<EditableFaceCard> {
-  String question, answer;
-  int _id, _deckNum, _cardId, _check;
-  EditableFaceCardState(
-      this.question, this._deckNum, this._id, this.answer, this._cardId);
-
-  //print("answer is: $answer");
+class FlipFaceCardState extends State<FlipFaceCard> {
+  bool _flag = true;
+  List<Cards> cardList;
+  int count = 0;
+  List<String> _questions = [];
+  List<String> _answers = [];
+  List<int> _confidence = [];
+  int _deckNum;
+  int i;
+  int _repetitions;
+  int _id;
   DatabaseHelper databaseHelper = DatabaseHelper();
 
-  void _addCard(String _answer) async {
-    _check = await databaseHelper
-        .insertCard(Cards(_cardAdd.text, _answer, _deckNum, 3, _id));
-    print(_check);
-  }
-
+  FlipFaceCardState(this._deckNum, this._id);
   _renderBg() {
     return Container(
       decoration: BoxDecoration(color: const Color(0xFFFFFFFF)),
@@ -51,18 +54,139 @@ class EditableFaceCardState extends State<EditableFaceCard> {
     );
   }
 
-  TextEditingController _cardAdd = TextEditingController();
-  TextEditingController _cardAddBack = TextEditingController();
+  Future<List<Cards>> loadCards() async {
+    print("deck num is $_deckNum");
+    cardList = await databaseHelper.getCardListForReviw(_deckNum, _id);
+    print("length is : ${cardList.length}");
+    //cardList.map((item) => _questions.insert(0, item.questions)).toList();
+    return cardList;
+  }
+
+  void _update() async {
+    for (int i = 0; i < _confidence.length; i++) {
+      //_confidence.map((e) async {
+      print("inner value is $i");
+      if (_confidence[i] == 1) {
+        count++;
+      }
+      print("values are ${_questions[i]}");
+      print(_answers[i]);
+      print(_deckNum);
+
+      print("comfi is ${_confidence[i]}");
+      print(_id);
+      // print(e.);
+      int _check = await databaseHelper.updateConfidence(
+          Cards(_questions[i], _answers[i], _deckNum, _confidence[i], _id));
+    }
+    ;
+    //print("check is: $_check");
+    double _percentage = (count / _confidence.length);
+    await databaseHelper.insertChart(Chart(_deckNum, _percentage, _id));
+  }
+
+  void changePage(int value) async {
+    //i++;
+
+    // print("Value is : $value");
+    setState(() {
+      _confidence[i] = value;
+      print("I is : $i");
+
+      if (_repetitions == 3) {
+        _update();
+        Navigator.pushReplacement(
+          context,
+          PageTransition(
+            type: PageTransitionType.fade,
+            child: LineChartWidget(_deckNum, _id),
+          ),
+        );
+      }
+      if (_repetitions == 0) {
+        if (i < _questions.length - 1)
+          i++;
+        else if (i >= _questions.length - 1) {
+          i = 0;
+          _repetitions++;
+
+          // print("in here");
+          // print("i is resetted $i");
+          // print("repetition is $_repetitions");
+        }
+      }
+
+      if (_repetitions == 1) {
+        //print("in second if");
+        for (int j = i + 1; j < _questions.length; j++) {
+          if (_confidence[j] == 1 || _confidence[j] == 2) {
+            i++;
+            print("in loop rep 1");
+            // print("in the loop $i");
+          } else {
+            print("i in rep1 $i");
+            print("broke loop rep 1");
+            i++;
+            break;
+          }
+        }
+        if (i >= _questions.length - 1) {
+          i = 0;
+          _repetitions++;
+          print("i is resetted $i");
+        }
+        // print("final i is: $i");
+      }
+      if (_repetitions == 2) {
+        print("confidence is : $_confidence");
+        // if (i < _questions.length - 1) {
+        for (int j = i + 1; j < _questions.length; j++) {
+          if (_confidence[j] == 1) {
+            print("in loop rep2");
+            i++;
+          } else {
+            print("breaking loop rep 2");
+            i++;
+            break;
+          }
+          print("i is: $i");
+        }
+        //  }
+        if (i == _questions.length - 1) {
+          i = 0;
+          _repetitions++;
+        }
+      }
+    });
+    print("repetition is $_repetitions");
+  }
+
   @override
   void initState() {
-    _cardAdd.text = question;
-    _cardAddBack.text = answer;
-    // TODO: implement initState
+    _repetitions = 0;
+    count = 0;
+    i = 0;
     super.initState();
+    loadCards().then((value) {
+      cardList.map((item) {
+        _questions.insert(0, item.questions);
+        _answers.insert(0, item.answers);
+        _confidence.insert(0, item.confidence);
+        print("in questions is:$_questions");
+        print("in answer is $_answers");
+      }).toList();
+      //_questions = _questions.reversed.toList();
+      setState(() {});
+    });
+    print("questions is : $_questions");
+
+    //_questions = _questions.reversed.toList();
+    // print("list is: ${cardList[0].questions}");
   }
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: Text('FlipCard')),
       drawer: DrawerForPage(),
@@ -101,7 +225,7 @@ class EditableFaceCardState extends State<EditableFaceCard> {
                             //flex: 2,
                             child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
-                                child: Text(question,
+                                child: Text(_questions[i],
                                     style: TextStyle(
                                         fontSize: 15, color: Colors.white))),
                           ),
@@ -123,7 +247,7 @@ class EditableFaceCardState extends State<EditableFaceCard> {
                               //flex: 2,
                               child: SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
-                                  child: Text(answer,
+                                  child: Text(_answers[i],
                                       style: TextStyle(
                                           fontSize: 15, color: Colors.white))
                                   // child: TextField(
@@ -181,22 +305,38 @@ class EditableFaceCardState extends State<EditableFaceCard> {
                   ),
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.only(right: 15, bottom: 10),
-                  child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                          child: Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.fade,
-                                child: EditableNewFaceCard(
-                                    question, answer, _deckNum, _id, _cardId),
-                              ),
-                            );
-                          })))
+              Row(children: <Widget>[
+                Expanded(
+                    child: RaisedButton(
+                        onPressed: () {
+                          //  _answers.removeAt(0);
+                          //_confidence[i] = 3;
+                          // RenderNextElement(flag: _flag)
+                          //   ..dispatch(context);
+                          //Navigator.pop(context, 3);
+                          changePage(3);
+                          print("going back");
+                        },
+                        child: Text("Bad"))),
+                Expanded(
+                    child: RaisedButton(
+                        onPressed: () {
+                          changePage(2);
+                          //Navigator.pop(context, 2);
+                          // _answers.removeAt(0);
+                          // _confidence[i] = 2;
+                        },
+                        child: Text("Ok"))),
+                Expanded(
+                    child: RaisedButton(
+                        onPressed: () {
+                          changePage(1);
+                          //Navigator.pop(context, 1);
+                          //_answers.removeAt(0);
+                          // _confidence[i] = 1;
+                        },
+                        child: Text("Good")))
+              ])
             ],
           )
         ],

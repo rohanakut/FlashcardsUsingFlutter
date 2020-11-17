@@ -32,11 +32,10 @@ class GoogleTranslateState extends State<GoogleTranslate> {
         languageB = 'en';
         break;
     }
-    translator.translate(input, to: languageB).then((result) {
-      print("Source: $input\nTranslated: $result");
-      setState(() {
-        _translateBottom.text = result.toString();
-      });
+    var translation = await translator.translate(input, to: languageB);
+    print("Source: $input\nTranslated: $translation");
+    setState(() {
+      _translateBottom.text = translation.toString();
     });
   }
 
@@ -107,6 +106,9 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                 });
               },
             ),
+            // RaisedButton(onPressed: () {
+            //   translation("hello", 1, 1);
+            // }),
             Column(children: <Widget>[
               Container(
                   margin: EdgeInsets.fromLTRB(12, 12, 12, 0),

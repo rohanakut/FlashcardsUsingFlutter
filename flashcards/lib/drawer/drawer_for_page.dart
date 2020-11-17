@@ -1,3 +1,4 @@
+import 'package:flashcards/Login/login_page.dart';
 import 'package:flashcards/features/google_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
@@ -32,12 +33,13 @@ class DrawerForPage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            title: Text('Logout'),
             onTap: () {
               // Update the state of the app
               // ...
               // Then close the drawer
-              Navigator.pop(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             },
           ),
         ],

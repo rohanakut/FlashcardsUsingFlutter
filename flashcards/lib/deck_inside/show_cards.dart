@@ -1,5 +1,7 @@
 import 'package:flashcards/cards/editable_face_card.dart';
 import 'package:flashcards/cards/face_card.dart';
+import 'package:flashcards/cards/flip_card_new.dart';
+import 'package:flashcards/cards/flip_face_card.dart';
 import 'package:flashcards/cards/new_card.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/cards.dart';
@@ -18,6 +20,7 @@ class ShowCards extends StatefulWidget {
 }
 
 class ShowCardsState extends State<ShowCards> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
   ShowCardsState(this._deckNum, this._id);
   List<String> _questions = [];
   List<String> _answers = [];
@@ -26,7 +29,7 @@ class ShowCardsState extends State<ShowCards> {
   int _id;
   int _deckNum;
   Color _color = Colors.white;
-  DatabaseHelper databaseHelper = DatabaseHelper();
+
   List<Cards> cardList;
 
   void _addCard() async {
@@ -34,18 +37,26 @@ class ShowCardsState extends State<ShowCards> {
       context,
       PageTransition(
         type: PageTransitionType.fade,
+        //child: FlipCardNew(_deckNum, _id),
         child: NewCard(_deckNum, _id),
       ),
     ).then((value) async {
       _questions = [];
+      _answers = [];
+      _cardId = [];
       //cardList.clear();
       cardList = await databaseHelper.getCardList(_deckNum, _id);
-      cardList.map((item) => _questions.insert(0, item.questions)).toList();
+      cardList.map((item) {
+        _questions.insert(0, item.questions);
+      }).toList();
       cardList.map((item) => _answers.insert(0, item.answers)).toList();
       cardList.map((item) => _cardId.insert(0, item.cardid)).toList();
       _questions = _questions.reversed.toList();
       _answers = _answers.reversed.toList();
       _cardId = _cardId.reversed.toList();
+      print("in func $_questions");
+      print("in func $_answers");
+      print("in func $_cardId");
       //print("the rendered list is: $_questions");
       setState(() {});
     });
@@ -72,6 +83,9 @@ class ShowCardsState extends State<ShowCards> {
       _questions = _questions.reversed.toList();
       _answers = _answers.reversed.toList();
       _cardId = _cardId.reversed.toList();
+      print("in init state $_questions");
+      print("in init state $_answers");
+      print("in init state $_cardId");
       setState(() {});
     });
     //  print("questions is : $_questions");
@@ -179,7 +193,7 @@ class ShowCardsState extends State<ShowCards> {
                         context,
                         PageTransition(
                           type: PageTransitionType.fade,
-                          child: FaceCard(_deckNum, _id),
+                          child: FlipFaceCard(_deckNum, _id),
                         ),
                       );
                     },

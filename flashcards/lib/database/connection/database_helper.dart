@@ -240,12 +240,12 @@ class DatabaseHelper {
   Future<List<Cards>> getCardList(int id, int uId) async {
     var cardMapList = await getCardMapList(id, uId);
     int count = cardMapList.length;
-    print("card list is $cardMapList");
+    // print("card list is $cardMapList");
     List<Cards> cardList = List<Cards>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
       cardList.add(Cards.fromMapObject(cardMapList[i]));
-      print("card list is ${cardList[0].questions}");
+      // print("card list is ${cardList[0].questions}");
     }
 
     return cardList;
@@ -254,13 +254,13 @@ class DatabaseHelper {
   Future<List<Cards>> getCardListForReviw(int id, int uId) async {
     var cardMapList = await getCardMapList(id, uId);
     int count = cardMapList.length;
-    print("card list is $cardMapList");
+    //print("card list is $cardMapList");
 
     List<Cards> cardList = List<Cards>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
       cardList.add(Cards.fromMapObject(cardMapList[i]));
-      print("card list is ${cardList[0].questions}");
+      // print("card list is ${cardList[0].questions}");
     }
     cardList.shuffle();
     return cardList;
@@ -269,12 +269,12 @@ class DatabaseHelper {
   Future<List<Chart>> getChartList(int id, int uId) async {
     var chartMapList = await getChartMapList(id, uId);
     int count = chartMapList.length;
-    print("chart list is $chartMapList");
+    // print("chart list is $chartMapList");
     List<Chart> chartList = List<Chart>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
       chartList.add(Chart.fromMapObject(chartMapList[i]));
-      print("card list is ${chartList[0].percentage}");
+      // print("card list is ${chartList[0].percentage}");
     }
 
     return chartList;

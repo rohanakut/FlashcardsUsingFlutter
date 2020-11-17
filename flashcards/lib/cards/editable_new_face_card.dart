@@ -66,7 +66,7 @@ class EditableNewFaceCardState extends State<EditableNewFaceCard> {
                 child: TextFormField(
                   keyboardType: TextInputType.multiline,
                   minLines: 1,
-                  maxLines: 20,
+                  maxLines: 10,
                   //initialValue: _question,
                   decoration: InputDecoration(
                     isDense: true,

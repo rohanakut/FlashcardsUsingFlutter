@@ -1,5 +1,6 @@
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/cards.dart';
+import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class NewCardBack extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(title: Text('Card Name will be here')),
+        drawer: DrawerForPage(),
         body: Column(children: <Widget>[
           // alignment: Alignment.center,
           //width: 300,
@@ -44,7 +46,7 @@ class NewCardBack extends StatelessWidget {
             child: TextField(
               keyboardType: TextInputType.multiline,
               minLines: 1,
-              maxLines: 20,
+              maxLines: 10,
               decoration: InputDecoration(
                 isDense: true,
                 hintText:

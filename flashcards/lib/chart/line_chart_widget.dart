@@ -48,6 +48,7 @@ class LineChartWidgetState extends State<LineChartWidget> {
       }
     });
     print(_listAdd);
+    _listAdd = _listAdd.reversed.toList();
     return _listAdd;
   }
 
@@ -66,6 +67,7 @@ class LineChartWidgetState extends State<LineChartWidget> {
           j++;
         }
       }
+      _listAdd = _listAdd.reversed.toList();
       setState(() {});
     });
 

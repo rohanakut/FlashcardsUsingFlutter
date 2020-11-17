@@ -1,4 +1,5 @@
 import 'package:flashcards/cards/new_card_back.dart';
+import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:translator/translator.dart';
@@ -29,6 +30,7 @@ class NewCard extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(title: Text('Card Name will be here')),
+        drawer: DrawerForPage(),
         body: Column(children: <Widget>[
           // alignment: Alignment.center,
           //width: 300,
@@ -37,7 +39,7 @@ class NewCard extends StatelessWidget {
             child: TextField(
               keyboardType: TextInputType.multiline,
               minLines: 1,
-              maxLines: 20,
+              maxLines: 10,
               decoration: InputDecoration(
                 isDense: true,
                 hintText:
@@ -53,41 +55,7 @@ class NewCard extends StatelessWidget {
               controller: _cardAdd,
             ),
           ),
-          // Container(
-          // margin: EdgeInsets.all(12),
-          //  height: (MediaQuery.of(context).size.height+100) / 2,
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 40, right: 40, top: 100),
-          //   child: TextField(
-          //     maxLines: maxLines,
-          //     decoration: InputDecoration(
-          //       border: InputBorder.none,
-          //       focusedBorder: InputBorder.none,
-          //       enabledBorder: InputBorder.none,
-          //       errorBorder: InputBorder.none,
-          //       disabledBorder: InputBorder.none,
-          //       hintText: "Enter a message",
-          //       fillColor: Colors.teal[100],
-          //       filled: true,
-          //     ),
-          //     controller: _cardAdd,
-          //   ),
-          // ),
 
-          // Row(
-          //   children: [
-          //     RaisedButton(
-          //       onPressed: () {},
-          //       child: Text("Search Dictionary"),
-          //     ),
-          //     RaisedButton(
-          //       onPressed: () {
-          //         translation(_cardAdd.text);
-          //       },
-          //       child: Text("Translate"),
-          //     )
-          //   ],
-          // ),
           Spacer(),
           SizedBox(
               height: 60,
@@ -100,7 +68,9 @@ class NewCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         PageTransition(
-                          type: PageTransitionType.fade,
+                          type: PageTransitionType.rightToLeft,
+                          //  alignment: Alignment.bottomCenter,
+                          duration: Duration(seconds: 1),
                           child: NewCardBack(_deckNum, _cardAdd.text, _id),
                         ),
                       ).then((value) {

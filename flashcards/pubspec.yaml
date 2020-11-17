@@ -32,6 +32,8 @@ dependencies:
   charts_flutter:
   translator:
   fl_chart:
+  flip_card: ^0.4.4
+  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
