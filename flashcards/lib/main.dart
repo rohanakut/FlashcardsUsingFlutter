@@ -1,3 +1,4 @@
+import 'package:charts_flutter/flutter.dart';
 import 'package:flashcards/Login/login_page.dart';
 import 'package:flashcards/animation/card_controller.dart';
 import 'package:flashcards/animation/display_card_controller.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
     // return new MaterialApp(
     //     theme: ThemeData(primaryColor: Colors.black), home: LoginPage());
     return new MaterialApp(
-        theme: ThemeData(primaryColor: Colors.black), home: DisplayPage());
+        theme: ThemeData(primaryColor: Colors.black), home: LineChartWidget());
     //return new MaterialApp(home: LoadedValues());
     // return new MaterialApp(home: NewCard());
     //return new MaterialApp(home: LineChartWidget());
