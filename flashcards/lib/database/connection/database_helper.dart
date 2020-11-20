@@ -62,7 +62,7 @@ class DatabaseHelper {
     await db.execute(
         "CREATE TABLE $tableName2(cardid INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, $deckNumber INTEGER NOT NULL,confidence INTEGER NOT NULL,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'), FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
     await db.execute(
-        "CREATE TABLE $tableName3(chartid INTEGER PRIMARY KEY AUTOINCREMENT, percentage FLOAT NOT NULL,$deckNumber INTEGER NOT NULL,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'), FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
+        "CREATE TABLE $tableName3(chartid INTEGER PRIMARY KEY AUTOINCREMENT, percentage FLOAT NOT NULL,good INTEGER NOT NULL, bad INTEGER NOT NULL, ok INTEGER NOT NULL,$deckNumber INTEGER NOT NULL,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'), FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {

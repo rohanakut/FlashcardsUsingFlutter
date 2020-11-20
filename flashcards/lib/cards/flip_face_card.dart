@@ -25,7 +25,7 @@ class FlipFaceCard extends StatefulWidget {
 class FlipFaceCardState extends State<FlipFaceCard> {
   bool _flag = true;
   List<Cards> cardList;
-  int count = 0;
+  int count = 0, _good = 0, _bad = 0, _ok = 0;
   List<String> _questions = [];
   List<String> _answers = [];
   List<int> _confidence = [];
@@ -69,6 +69,13 @@ class FlipFaceCardState extends State<FlipFaceCard> {
       print("inner value is $i");
       if (_confidence[i] == 1) {
         count++;
+        _good++;
+      }
+      if (_confidence[i] == 2) {
+        _ok++;
+      }
+      if (_confidence[i] == 3) {
+        _bad++;
       }
       print("values are ${_questions[i]}");
       print(_answers[i]);
@@ -83,7 +90,8 @@ class FlipFaceCardState extends State<FlipFaceCard> {
     ;
     //print("check is: $_check");
     double _percentage = (count / _confidence.length);
-    await databaseHelper.insertChart(Chart(_deckNum, _percentage, _id));
+    await databaseHelper
+        .insertChart(Chart(_deckNum, _percentage, _id, _good, _ok, _bad));
   }
 
   void changePage(int value) async {
@@ -101,7 +109,7 @@ class FlipFaceCardState extends State<FlipFaceCard> {
           PageTransition(
               type: PageTransitionType.fade,
               // child: LineChartWidget(_deckNum, _id),
-              child: DisplayPage()),
+              child: DisplayPage(_deckNum, _id)),
         );
       }
       if (_repetitions == 0) {

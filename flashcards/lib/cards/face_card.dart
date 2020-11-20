@@ -23,7 +23,7 @@ class FaceCard extends StatefulWidget {
 class FaceCardState extends State<FaceCard> {
   bool _flag = true;
   List<Cards> cardList;
-  int count = 0;
+  int count = 0, _good = 0, _ok = 0, _bad = 0;
   List<String> _questions = [];
   List<String> _answers = [];
   List<int> _confidence = [];
@@ -47,6 +47,13 @@ class FaceCardState extends State<FaceCard> {
       print("inner value is $i");
       if (_confidence[i] == 1) {
         count++;
+        _good++;
+      }
+      if (_confidence[i] == 2) {
+        _ok++;
+      }
+      if (_confidence[i] == 3) {
+        _bad++;
       }
       print("values are ${_questions[i]}");
       print(_answers[i]);
@@ -61,7 +68,8 @@ class FaceCardState extends State<FaceCard> {
     ;
     print("check is: $_check");
     double _percentage = (count / _confidence.length);
-    await databaseHelper.insertChart(Chart(_deckNum, _percentage, _id));
+    await databaseHelper
+        .insertChart(Chart(_deckNum, _percentage, _id, _good, _ok, _bad));
   }
 
   void changePage() async {
