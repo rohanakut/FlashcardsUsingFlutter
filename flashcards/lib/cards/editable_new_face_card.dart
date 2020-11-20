@@ -55,7 +55,7 @@ class EditableNewFaceCardState extends State<EditableNewFaceCard> {
     final maxLines = 10;
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: Text('Card Name will be here')),
+        appBar: AppBar(title: Text('Edit Card')),
         body: Form(
             key: _form,
             child: Column(children: <Widget>[

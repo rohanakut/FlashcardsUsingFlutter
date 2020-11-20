@@ -1,7 +1,11 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flexible_toast/flutter_flexible_toast.dart';
 import 'package:translator/translator.dart';
+//import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:edge_alert/edge_alert.dart';
 
 class GoogleTranslate extends StatefulWidget {
   GoogleTranslateState createState() => new GoogleTranslateState();
@@ -37,6 +41,57 @@ class GoogleTranslateState extends State<GoogleTranslate> {
     setState(() {
       _translateBottom.text = translation.toString();
     });
+  }
+
+  Future<bool> checkConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    }
+    return false;
+  }
+
+  showNotifications() {
+    EdgeAlert.show(context,
+        description:
+            'Activate the internet and reload the page to use this feature',
+        gravity: EdgeAlert.TOP,
+        icon: Icons.wifi,
+        duration: EdgeAlert.LENGTH_LONG,
+        backgroundColor: Colors.black);
+
+    // FlutterFlexibleToast.showToast(
+    //     message: "Short Loading 2 Sec Toast",
+    //     toastLength: Toast.LENGTH_LONG,
+    //     toastGravity: ToastGravity.BOTTOM,
+    //     icon: ICON.ERROR,
+    //     radius: 100,
+    //     elevation: 10,
+    //     imageSize: 35,
+    //     textColor: Colors.white,
+    //     backgroundColor: Colors.black,
+    //     timeInSeconds: 2);
+  }
+
+  @override
+  void initState() {
+    checkConnection().then((value) {
+      if (value != null && value) {
+        print("internet present");
+      } else {
+        EdgeAlert.show(context,
+            description:
+                'Activate the internet and reload the page to use this feature ',
+            gravity: EdgeAlert.TOP,
+            icon: Icons.wifi,
+            duration: EdgeAlert.LENGTH_LONG,
+            backgroundColor: Colors.black);
+      }
+      setState(() {});
+    });
+    super.initState();
   }
 
   AppBar appBar = AppBar(title: Text('Demo'));
@@ -92,8 +147,15 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                     filled: true,
                   ),
                   onChanged: (text) {
-                    translation(_translateTop.text, selectedValueTop,
-                        selectedValueBottom);
+                    checkConnection().then((value) {
+                      if (value != null && value) {
+                        translation(_translateTop.text, selectedValueTop,
+                            selectedValueBottom);
+                        print("internet present");
+                      } else {
+                        showNotifications();
+                      }
+                    });
                   },
                 ),
               ),

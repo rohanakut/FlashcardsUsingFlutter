@@ -1,44 +1,36 @@
-import 'package:flashcards/cards/new_card_back.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
-import 'package:flashcards/drawer/drawer_for_page.dart';
-import 'package:flip_card/flip_card.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-import 'package:flashcards/database/models/cards.dart';
-import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
+import 'package:flip_card/flip_card.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:flashcards/deck_inside/show_cards.dart';
 
-class NewCard extends StatefulWidget {
-  int _deckNum;
-  int _id;
-  NewCard(this._deckNum, this._id);
+class EditableNewCardFlip extends StatefulWidget {
+  String _question, _answer;
+  int _deckNum, _id, _cardId;
 
-  NewCardState createState() => new NewCardState(_deckNum, _id);
+  EditableNewCardFlip(
+      this._question, this._answer, this._deckNum, this._id, this._cardId);
+  EditableNewCardFlipState createState() =>
+      new EditableNewCardFlipState(_question, _answer, _deckNum, _id, _cardId);
 }
 
-class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
-  int _deckNum;
-  int _id, _check, _selected = 0;
-  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
+class EditableNewCardFlipState extends State<EditableNewCardFlip>
+    with SingleTickerProviderStateMixin {
+  String _question, _answer;
+  int _deckNum, _id, _cardId;
+  TextEditingController _cardEditFace = TextEditingController();
+  TextEditingController _cardEditBack = TextEditingController();
+  DatabaseHelper databaseHelper = DatabaseHelper();
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  EditableNewCardFlipState(
+      this._question, this._answer, this._deckNum, this._id, this._cardId);
 
-  NewCardState(this._deckNum, this._id);
-//change code
   AnimationController _animationController;
   Animation _animation;
   AnimationStatus _animationStatus = AnimationStatus.dismissed;
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
-  void _addCard(String _question, String _answer) async {
-    _check = await databaseHelper
-        .insertCard(Cards(_question, _answer, _deckNum, 3, _id));
-    print(_check);
-  }
-
-  @override
   void initState() {
-    _selected = 0;
     super.initState();
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -49,11 +41,33 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
       ..addStatusListener((status) {
         _animationStatus = status;
       });
+    if (_question != null) {
+      setState(() {
+        _cardEditFace.text = _question;
+      });
+    }
+
+    if (_answer != null) {
+      setState(() {
+        _cardEditBack.text = _answer;
+      });
+    }
   }
 
-//uptill here
-  TextEditingController _cardAdd = TextEditingController();
-  TextEditingController _cardAddBack = TextEditingController();
+  void _updateCard() async {
+    int _check = await databaseHelper
+        .updateCard(_cardId, _cardEditFace.text, _cardEditBack.text)
+        .then((value) {
+      Navigator.pushReplacement(
+        context,
+        PageTransition(
+          type: PageTransitionType.fade,
+          child: ShowCards(this._deckNum, this._id),
+        ),
+      );
+    });
+    print(_check);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +114,7 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                                         errorBorder: InputBorder.none,
                                         disabledBorder: InputBorder.none,
                                       ),
-                                      controller: _cardAdd,
+                                      controller: _cardEditFace,
                                     )))),
                         back: Container(
                           padding: const EdgeInsets.only(
@@ -127,7 +141,7 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                                       errorBorder: InputBorder.none,
                                       disabledBorder: InputBorder.none,
                                     ),
-                                    controller: _cardAddBack,
+                                    controller: _cardEditBack,
                                   ))),
                         ))
                   ])),
@@ -138,31 +152,8 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                       child: FloatingActionButton(
                           child: Icon(Icons.save),
                           onPressed: () {
-                            if (_cardAdd.text.isEmpty ||
-                                _cardAddBack.text.isEmpty) {
-                              if (_selected == 0) {
-                                setState(() {
-                                  _selected = 1;
-                                  DarkAlertBox(
-                                      context: context,
-                                      title: "Empty Card",
-                                      messageText:
-                                          "You are trying to save an empty card. Click OK if you wish to proceed",
-                                      buttonColor: Color(0xFF20242A),
-                                      buttonText: "OK",
-                                      titleTextColor: Colors.white,
-                                      buttonTextColor: Colors.white,
-                                      icon: Icons.save,
-                                      messageTextColor: Colors.white);
-                                });
-                              } else if (_selected == 1) {
-                                _addCard(_cardAdd.text, _cardAddBack.text);
-                                Navigator.pop(context);
-                              }
-                            } else {
-                              _addCard(_cardAdd.text, _cardAddBack.text);
-                              Navigator.pop(context);
-                            }
+                            _updateCard();
+                            Navigator.pop(context);
                           }))),
               SizedBox(
                   height: 60,

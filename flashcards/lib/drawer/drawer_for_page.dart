@@ -1,4 +1,5 @@
 import 'package:flashcards/Login/login_page.dart';
+import 'package:flashcards/features/dictionary.dart';
 import 'package:flashcards/features/google_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
@@ -27,6 +28,17 @@ class DrawerForPage extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => GoogleTranslate()));
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+            },
+          ),
+          ListTile(
+            title: Text('Dictionary'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Dictionary()));
               // Update the state of the app
               // ...
               // Then close the drawer

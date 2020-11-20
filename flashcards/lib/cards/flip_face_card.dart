@@ -1,5 +1,6 @@
 import 'package:flashcards/cards/editable_answer_card.dart';
 import 'package:flashcards/cards/editable_new_face_card.dart';
+import 'package:flashcards/chart/display_page.dart';
 import 'package:flashcards/chart/line_chart_widget.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
@@ -98,9 +99,9 @@ class FlipFaceCardState extends State<FlipFaceCard> {
         Navigator.pushReplacement(
           context,
           PageTransition(
-            type: PageTransitionType.fade,
-            child: LineChartWidget(_deckNum, _id),
-          ),
+              type: PageTransitionType.fade,
+              // child: LineChartWidget(_deckNum, _id),
+              child: DisplayPage()),
         );
       }
       if (_repetitions == 0) {

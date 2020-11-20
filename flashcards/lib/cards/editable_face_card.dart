@@ -1,4 +1,5 @@
 import 'package:flashcards/cards/editable_answer_card.dart';
+import 'package:flashcards/cards/editable_new_card_flip.dart';
 import 'package:flashcards/cards/editable_new_face_card.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
@@ -192,7 +193,7 @@ class EditableFaceCardState extends State<EditableFaceCard> {
                               context,
                               PageTransition(
                                 type: PageTransitionType.fade,
-                                child: EditableNewFaceCard(
+                                child: EditableNewCardFlip(
                                     question, answer, _deckNum, _id, _cardId),
                               ),
                             );

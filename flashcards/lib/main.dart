@@ -37,10 +37,10 @@ class MyApp extends StatelessWidget {
     //return new MaterialApp(home: ToDoList());
     //return new MaterialApp(home: FaceCard(_questions, _answers, _confidence));
     //return new MaterialApp(home: ShowCards(_questions));
-    // return new MaterialApp(
-    //     theme: ThemeData(primaryColor: Colors.black), home: LoginPage());
     return new MaterialApp(
-        theme: ThemeData(primaryColor: Colors.black), home: LineChartWidget());
+        theme: ThemeData(primaryColor: Colors.black), home: LoginPage());
+    // return new MaterialApp(
+    //     theme: ThemeData(primaryColor: Colors.black), home: LineChartWidget());
     //return new MaterialApp(home: LoadedValues());
     // return new MaterialApp(home: NewCard());
     //return new MaterialApp(home: LineChartWidget());
