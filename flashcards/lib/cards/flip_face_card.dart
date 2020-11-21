@@ -63,10 +63,10 @@ class FlipFaceCardState extends State<FlipFaceCard> {
     return cardList;
   }
 
-  void _update() async {
+  Future<int> _update() async {
     for (int i = 0; i < _confidence.length; i++) {
       //_confidence.map((e) async {
-      print("inner value is $i");
+      // print("inner value is $i");
       if (_confidence[i] == 1) {
         count++;
         _good++;
@@ -77,19 +77,22 @@ class FlipFaceCardState extends State<FlipFaceCard> {
       if (_confidence[i] == 3) {
         _bad++;
       }
-      print("values are ${_questions[i]}");
-      print(_answers[i]);
-      print(_deckNum);
+      // print("values are ${_questions[i]}");
+      // print(_answers[i]);
+      // print(_deckNum);
 
-      print("comfi is ${_confidence[i]}");
-      print(_id);
-      // print(e.);
+      // print("comfi is ${_confidence[i]}");
+      // print(_id);
+      // // print(e.);
       int _check = await databaseHelper.updateConfidence(
           Cards(_questions[i], _answers[i], _deckNum, _confidence[i], _id));
     }
-    ;
+
     //print("check is: $_check");
     double _percentage = (count / _confidence.length);
+    print(_good);
+    print(_ok);
+    print(_bad);
     await databaseHelper
         .insertChart(Chart(_deckNum, _percentage, _id, _good, _ok, _bad));
   }
@@ -100,17 +103,25 @@ class FlipFaceCardState extends State<FlipFaceCard> {
     // print("Value is : $value");
     setState(() {
       _confidence[i] = value;
-      print("I is : $i");
+      //  print("I is : $i");
 
       if (_repetitions == 3) {
-        _update();
-        Navigator.pushReplacement(
-          context,
-          PageTransition(
-              type: PageTransitionType.fade,
-              // child: LineChartWidget(_deckNum, _id),
-              child: DisplayPage(_deckNum, _id)),
-        );
+        _update().then((value) {
+          Navigator.pushReplacement(
+            context,
+            PageTransition(
+                type: PageTransitionType.fade,
+                //   child: LineChartWidget(_deckNum, _id)),
+                child: DisplayPage(_deckNum, _id)),
+          );
+        });
+        // Navigator.pushReplacement(
+        //   context,
+        //   PageTransition(
+        //       type: PageTransitionType.fade,
+        //       //   child: LineChartWidget(_deckNum, _id)),
+        //       child: DisplayPage(_deckNum, _id)),
+        // );
       }
       if (_repetitions == 0) {
         if (i < _questions.length - 1)
@@ -130,11 +141,11 @@ class FlipFaceCardState extends State<FlipFaceCard> {
         for (int j = i + 1; j < _questions.length; j++) {
           if (_confidence[j] == 1 || _confidence[j] == 2) {
             i++;
-            print("in loop rep 1");
+            // print("in loop rep 1");
             // print("in the loop $i");
           } else {
-            print("i in rep1 $i");
-            print("broke loop rep 1");
+            //  print("i in rep1 $i");
+            //  print("broke loop rep 1");
             i++;
             break;
           }
@@ -142,23 +153,23 @@ class FlipFaceCardState extends State<FlipFaceCard> {
         if (i >= _questions.length - 1) {
           i = 0;
           _repetitions++;
-          print("i is resetted $i");
+          //  print("i is resetted $i");
         }
         // print("final i is: $i");
       }
       if (_repetitions == 2) {
-        print("confidence is : $_confidence");
+        // print("confidence is : $_confidence");
         // if (i < _questions.length - 1) {
         for (int j = i + 1; j < _questions.length; j++) {
           if (_confidence[j] == 1) {
-            print("in loop rep2");
+            //   print("in loop rep2");
             i++;
           } else {
-            print("breaking loop rep 2");
+            //  print("breaking loop rep 2");
             i++;
             break;
           }
-          print("i is: $i");
+          // print("i is: $i");
         }
         //  }
         if (i == _questions.length - 1) {
@@ -167,7 +178,7 @@ class FlipFaceCardState extends State<FlipFaceCard> {
         }
       }
     });
-    print("repetition is $_repetitions");
+    // print("repetition is $_repetitions");
   }
 
   @override

@@ -26,7 +26,7 @@ class DrawerForPage extends StatelessWidget {
             title: Text('Translate'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushReplacement(context,
+              Navigator.push(context,
                   MaterialPageRoute(builder: (context) => GoogleTranslate()));
               // Update the state of the app
               // ...
@@ -37,7 +37,7 @@ class DrawerForPage extends StatelessWidget {
             title: Text('Dictionary'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushReplacement(context,
+              Navigator.push(context,
                   MaterialPageRoute(builder: (context) => Dictionary()));
               // Update the state of the app
               // ...
