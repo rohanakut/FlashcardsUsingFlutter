@@ -153,28 +153,30 @@ class DisplayPageState extends State<DisplayPage> {
     ];
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: Text("Review")),
-        body: SingleChildScrollView(
-            child: Column(
-          children: <Widget>[
-            SizedBox(
-                height: 30,
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      "Number of cards reviewed",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-                    ),
-                    Text(
-                      chartList.length.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                )),
-            TodayProgressChart(data),
-            DailyProgressChart(data1)
-          ],
-        )));
+      appBar: AppBar(title: Text("Review")),
+      body: SingleChildScrollView(
+          child: Column(
+        children: <Widget>[
+          Container(
+            color: Colors.green,
+            padding: EdgeInsets.all(15),
+            child: Row(children: <Widget>[
+              Text(
+                "Number of cards reviewed:",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(width: 10),
+              Text(
+                data.length.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              )
+            ]),
+          ),
+          SizedBox(height: 15),
+          TodayProgressChart(data),
+          DailyProgressChart(data1)
+        ],
+      )),
+    );
   }
 }

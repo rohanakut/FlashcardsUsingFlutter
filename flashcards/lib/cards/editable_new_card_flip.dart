@@ -153,7 +153,17 @@ class EditableNewCardFlipState extends State<EditableNewCardFlip>
                           child: Icon(Icons.save),
                           onPressed: () {
                             _updateCard();
-                            Navigator.pop(context);
+                            Navigator.pop(context, 1);
+                            //  Navigator.pushReplacement(
+                            //               context,
+                            //               PageTransition(
+                            //                 type: PageTransitionType.fade,
+                            //                 child: ShowCards(
+                            //                   _deckNum,
+                            //                   _id,
+                            //                 ),
+                            //               ),
+                            //             );
                           }))),
               SizedBox(
                   height: 60,

@@ -11,7 +11,7 @@ class DailyProgressChart extends StatelessWidget {
     // TODO: implement build
     List<charts.Series<DailyProgress, int>> series = [
       charts.Series(
-        id: "Today's Progress",
+        id: "Your progress in last 10 Attempts",
         data: data,
         domainFn: (DailyProgress series, _) => series.day,
         measureFn: (DailyProgress series, _) => series.confidence,
@@ -24,9 +24,30 @@ class DailyProgressChart extends StatelessWidget {
       child: Card(
         child: Column(
           children: <Widget>[
-            Text("Today's Progress"),
+            // Text("Your progress in last 10 Attempts"),
             Expanded(
               child: charts.LineChart(series,
+                  behaviors: [
+                    new charts.ChartTitle('Your progress in last 10 Attempts',
+                        //  subTitle: 'Top sub-title text',
+                        behaviorPosition: charts.BehaviorPosition.top,
+                        titleOutsideJustification:
+                            charts.OutsideJustification.start,
+                        // Set a larger inner padding than the default (10) to avoid
+                        // rendering the text too close to the top measure axis tick label.
+                        // The top tick label may extend upwards into the top margin region
+                        // if it is located at the top of the draw area.
+                        innerPadding: 18),
+                    new charts.ChartTitle('Attempts',
+                        //layoutPreferredSize: 10,
+                        behaviorPosition: charts.BehaviorPosition.bottom,
+                        titleOutsideJustification:
+                            charts.OutsideJustification.middleDrawArea),
+                    new charts.ChartTitle('Your Progress (%)',
+                        behaviorPosition: charts.BehaviorPosition.start,
+                        titleOutsideJustification:
+                            charts.OutsideJustification.middleDrawArea),
+                  ],
                   animate: true,
                   defaultRenderer:
                       new charts.LineRendererConfig(includePoints: true)),

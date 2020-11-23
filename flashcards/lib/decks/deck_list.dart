@@ -29,6 +29,7 @@ class DeckListState extends State<DeckList>
   int _selected = 0;
   int _check;
   List<Decks> deckList;
+  // List<Chart> chartList;
 
   void _showToast() {
     ft.showToast(
@@ -71,6 +72,7 @@ class DeckListState extends State<DeckList>
 
   Future<List<Decks>> loadList() async {
     deckList = await databaseHelper.getDeckList(_id);
+    //  chartList = await databaseHelper.getChartList(_deckNum, _id);
     // deckList.map((item) => _to_be_shown.insert(0, item.deckName)).toList();
     // _to_be_shown = _to_be_shown.reversed.toList();
   }

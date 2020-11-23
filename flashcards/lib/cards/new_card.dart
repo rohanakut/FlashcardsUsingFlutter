@@ -1,5 +1,6 @@
 import 'package:flashcards/cards/new_card_back.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
+import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,7 +84,7 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                                 child: Container(
                                     padding: const EdgeInsets.only(
                                         left: 20, right: 20, top: 80),
-                                    color: Colors.teal[100],
+                                    color: Colors.teal[300],
                                     child: TextField(
                                       keyboardType: TextInputType.multiline,
                                       minLines: 1,
@@ -92,7 +93,7 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                                         isDense: true,
                                         hintText:
                                             'Enter the Content here. As your content increases the box will automatically increase in size',
-                                        fillColor: Colors.teal[100],
+                                        fillColor: Colors.teal[300],
                                         filled: true,
                                         border: InputBorder.none,
                                         focusedBorder: InputBorder.none,
@@ -158,10 +159,30 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                               } else if (_selected == 1) {
                                 _addCard(_cardAdd.text, _cardAddBack.text);
                                 Navigator.pop(context);
+                                // Navigator.pushReplacement(
+                                //   context,
+                                //   PageTransition(
+                                //     type: PageTransitionType.fade,
+                                //     child: ShowCards(
+                                //       _deckNum,
+                                //       _id,
+                                //     ),
+                                //   ),
+                                // );
                               }
                             } else {
                               _addCard(_cardAdd.text, _cardAddBack.text);
                               Navigator.pop(context);
+                              // Navigator.pushReplacement(
+                              //   context,
+                              //   PageTransition(
+                              //     type: PageTransitionType.fade,
+                              //     child: ShowCards(
+                              //       _deckNum,
+                              //       _id,
+                              //     ),
+                              //   ),
+                              // );
                             }
                           }))),
               SizedBox(

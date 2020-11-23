@@ -33,7 +33,9 @@ class FlipFaceCardState extends State<FlipFaceCard> {
   int i;
   int _repetitions;
   int _id;
+  bool cardStatus;
   DatabaseHelper databaseHelper = DatabaseHelper();
+  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
   FlipFaceCardState(this._deckNum, this._id);
   _renderBg() {
@@ -226,10 +228,11 @@ class FlipFaceCardState extends State<FlipFaceCard> {
                       left: 32.0, right: 32.0, top: 25.0, bottom: 25.0),
                   color: Color(0x00000000),
                   child: FlipCard(
+                    key: cardKey,
                     direction: FlipDirection.HORIZONTAL,
                     speed: 1000,
                     onFlipDone: (status) {
-                      print(status);
+                      cardStatus = status;
                     },
                     front: Container(
                       decoration: BoxDecoration(
@@ -329,31 +332,70 @@ class FlipFaceCardState extends State<FlipFaceCard> {
                 Expanded(
                     child: RaisedButton(
                         onPressed: () {
-                          //  _answers.removeAt(0);
-                          //_confidence[i] = 3;
-                          // RenderNextElement(flag: _flag)
-                          //   ..dispatch(context);
-                          //Navigator.pop(context, 3);
-                          changePage(3);
-                          print("going back");
+                          if (cardStatus == false) {
+                            setState(() {
+                              cardKey.currentState.toggleCard();
+                            });
+                            Future.delayed(const Duration(milliseconds: 600),
+                                () {
+                              changePage(3);
+                              print("going back");
+                            });
+                          } else {
+                            //  _answers.removeAt(0);
+                            //_confidence[i] = 3;
+                            // RenderNextElement(flag: _flag)
+                            //   ..dispatch(context);
+                            //Navigator.pop(context, 3);
+                            changePage(3);
+                            print("going back");
+                          }
                         },
                         child: Text("Bad"))),
                 Expanded(
                     child: RaisedButton(
                         onPressed: () {
-                          changePage(2);
-                          //Navigator.pop(context, 2);
-                          // _answers.removeAt(0);
-                          // _confidence[i] = 2;
+                          if (cardStatus == false) {
+                            setState(() {
+                              cardKey.currentState.toggleCard();
+                            });
+                            Future.delayed(const Duration(milliseconds: 600),
+                                () {
+                              changePage(2);
+                              print("going back");
+                            });
+                          } else {
+                            //  _answers.removeAt(0);
+                            //_confidence[i] = 3;
+                            // RenderNextElement(flag: _flag)
+                            //   ..dispatch(context);
+                            //Navigator.pop(context, 3);
+                            changePage(2);
+                            print("going back");
+                          }
                         },
                         child: Text("Ok"))),
                 Expanded(
                     child: RaisedButton(
                         onPressed: () {
-                          changePage(1);
-                          //Navigator.pop(context, 1);
-                          //_answers.removeAt(0);
-                          // _confidence[i] = 1;
+                          if (cardStatus == false) {
+                            setState(() {
+                              cardKey.currentState.toggleCard();
+                            });
+                            Future.delayed(const Duration(milliseconds: 600),
+                                () {
+                              changePage(1);
+                              print("going back");
+                            });
+                          } else {
+                            //  _answers.removeAt(0);
+                            //_confidence[i] = 3;
+                            // RenderNextElement(flag: _flag)
+                            //   ..dispatch(context);
+                            //Navigator.pop(context, 3);
+                            changePage(1);
+                            print("going back");
+                          }
                         },
                         child: Text("Good")))
               ])

@@ -2,9 +2,11 @@ import 'package:flashcards/cards/editable_answer_card.dart';
 import 'package:flashcards/cards/editable_new_card_flip.dart';
 import 'package:flashcards/cards/editable_new_face_card.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
+import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flashcards/database/models/cards.dart';
@@ -26,6 +28,10 @@ class EditableFaceCardState extends State<EditableFaceCard> {
 
   //print("answer is: $answer");
   DatabaseHelper databaseHelper = DatabaseHelper();
+
+  Future<int> _deleteCard(int id, int cardId) async {
+    _check = await databaseHelper.deleteCard(cardId, id);
+  }
 
   void _addCard(String _answer) async {
     _check = await databaseHelper
@@ -182,22 +188,91 @@ class EditableFaceCardState extends State<EditableFaceCard> {
                   ),
                 ),
               ),
+              // Container(
+              //     padding: EdgeInsets.only(right: 15, bottom: 10),
+              //     child: Align(
+              //         alignment: Alignment.bottomRight,
+              //         child: FloatingActionButton(
+              //             child: Icon(Icons.edit),
+              //             onPressed: () {
+              //               Navigator.pushReplacement(
+              //                 context,
+              //                 PageTransition(
+              //                   type: PageTransitionType.fade,
+              //                   child: EditableNewCardFlip(
+              //                       question, answer, _deckNum, _id, _cardId),
+              //                 ),
+              //               );
+              //             })))
               Container(
-                  padding: EdgeInsets.only(right: 15, bottom: 10),
-                  child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                          child: Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.fade,
-                                child: EditableNewCardFlip(
-                                    question, answer, _deckNum, _id, _cardId),
-                              ),
-                            );
-                          })))
+                padding: EdgeInsets.only(right: 15, bottom: 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: FloatingActionButton(
+                              heroTag: "delete",
+                              child: Icon(Icons.delete),
+                              onPressed: () {
+                                DeleteAlertBox(
+                                    context: context,
+                                    title: 'Delete Card',
+                                    icon: Icons.delete,
+                                    infoMessage:
+                                        'Are you sure you want to permanently delete this card?',
+                                    onPressedYes: () {
+                                      _deleteCard(_id, _cardId).then((value) {
+                                        print("card deleted");
+                                        // Navigator.pushReplacement(
+                                        //   context,
+                                        //   PageTransition(
+                                        //     type: PageTransitionType.fade,
+                                        //     child: ShowCards(
+                                        //       _deckNum,
+                                        //       _id,
+                                        //     ),
+                                        //   ),
+                                        // );
+                                        Navigator.pop(context);
+                                        Navigator.pop(context, 1);
+                                      });
+                                    },
+                                    onPressedNo: () {
+                                      Navigator.pop(context);
+                                    });
+                                // Navigator.pushReplacement(
+                                //   context,
+                                //   PageTransition(
+                                //     type: PageTransitionType.fade,
+                                //     child: ShowCards(
+                                //       _deckNum,
+                                //       _id,
+                                //     ),
+                                //   ),
+                                // );
+                              })),
+                      SizedBox(
+                        width: 25,
+                      ),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: FloatingActionButton(
+                              heroTag: "edit",
+                              child: Icon(Icons.edit),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.fade,
+                                    child: EditableNewCardFlip(question, answer,
+                                        _deckNum, _id, _cardId),
+                                  ),
+                                );
+                                // Navigator.pop(context, 1);
+                              }))
+                    ]),
+              )
             ],
           )
         ],

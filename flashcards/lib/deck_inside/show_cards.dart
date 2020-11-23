@@ -159,7 +159,7 @@ class ShowCardsState extends State<ShowCards> {
                               print("cardid is: ${_cardId[index]}");
                               // print("$question");
                               //  print("$index");
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                 context,
                                 PageTransition(
                                   type: PageTransitionType.fade,
@@ -167,7 +167,30 @@ class ShowCardsState extends State<ShowCards> {
                                       _id, _answers[index], _cardId[index]),
                                 ),
                               ).then((value) {
-                                setState(() {});
+                                if (value == 1)
+                                  loadCards().then((value) {
+                                    _questions = [];
+                                    _answers = [];
+                                    _cardId = [];
+
+                                    setState(() {
+                                      cardList.map((item) {
+                                        _questions.insert(0, item.questions);
+                                        //  print("in questions is:$_questions");
+                                      }).toList();
+                                      cardList
+                                          .map((item) =>
+                                              _answers.insert(0, item.answers))
+                                          .toList();
+                                      cardList
+                                          .map((item) =>
+                                              _cardId.insert(0, item.cardid))
+                                          .toList();
+                                      _questions = _questions.reversed.toList();
+                                      _answers = _answers.reversed.toList();
+                                      _cardId = _cardId.reversed.toList();
+                                    });
+                                  });
                               });
                             });
                           },

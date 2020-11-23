@@ -279,4 +279,11 @@ class DatabaseHelper {
 
     return chartList;
   }
+
+  Future<int> deleteCard(int cardId, int id) async {
+    Database db = await this.database;
+    return await db.rawDelete(
+        'DELETE FROM $tableName2 WHERE (cardid = ? AND $userId = ?)',
+        [cardId, id]);
+  }
 }
