@@ -3,6 +3,7 @@ import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcards/database/models/login.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupPage extends StatefulWidget {
   SignupPageState createState() => new SignupPageState();
@@ -22,6 +23,8 @@ class SignupPageState extends State<SignupPage> {
   String reEnter;
   int _check;
   List<Login> loginList;
+  SharedPreferences checkUser;
+  bool newUser;
 
   // void addToList() {
   //   setState(() {
@@ -124,6 +127,7 @@ class SignupPageState extends State<SignupPage> {
                       if (_pwdAdd.text == _reEnterPwd.text &&
                           !(_pwdAdd.text.isEmpty) &&
                           !(_reEnterPwd.text.isEmpty)) {
+                        checkUser.setBool('firstTime', true);
                         _check = await databaseHelper
                             .insertNote(Login(_userAdd.text, _pwdAdd.text));
                         print(_check);

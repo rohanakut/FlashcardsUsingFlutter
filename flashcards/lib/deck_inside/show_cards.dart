@@ -115,7 +115,7 @@ class ShowCardsState extends State<ShowCards> {
                     color: Colors.grey[300],
                     size: 100,
                   ),
-                  Text("No deck Avalaible",
+                  Text("No cards Avalaible",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.grey[300],

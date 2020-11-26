@@ -12,6 +12,9 @@ import 'package:flashcards/chart/line_chart_widget.dart';
 import 'package:flashcards/database/loaded_values.dart';
 import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/decks/deck_list.dart';
+import 'package:flashcards/navigator/first_time_user.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 
@@ -21,7 +24,40 @@ void main() {
   runApp(new MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  MyAppState createState() => new MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  SharedPreferences checkUser;
+  bool newUser;
+  void check_if_exists() async {
+    checkUser = await SharedPreferences.getInstance();
+    newUser = (checkUser.getBool('login') ?? true);
+    print(newUser);
+    if (newUser == false) {
+      // Navigator.pushReplacement(
+      //     context, new MaterialPageRoute(builder: (context) => MyDashboard()));
+      print("new user found");
+    }
+    // } else {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     PageTransition(
+    //       type: PageTransitionType.fade,
+    //       child: LoginPage(),
+    //     ),
+    //   );
+    // }
+  }
+
+  @override
+  void initState() {
+    check_if_exists();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> _questions = ["a", "b", "c", "d", "e", "f", "g"];

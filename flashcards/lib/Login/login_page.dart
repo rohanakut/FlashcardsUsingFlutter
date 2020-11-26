@@ -2,14 +2,39 @@ import 'package:flashcards/Login/signup_page.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/login.dart';
 import 'package:flashcards/decks/deck_list.dart';
+import 'package:flashcards/tutorial/deck_list_tutorial.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPageState createState() => new LoginPageState();
 }
 
 class LoginPageState extends State<LoginPage> {
+  SharedPreferences checkUser;
+  bool newUser;
+  Future<bool> check_if_exists() async {
+    checkUser = await SharedPreferences.getInstance();
+    newUser = (checkUser.getBool('login') ?? true);
+    print(newUser);
+    if (newUser == false) {
+      // Navigator.pushReplacement(
+      //     context, new MaterialPageRoute(builder: (context) => MyDashboard()));
+      print("new user found");
+    }
+    // } else {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     PageTransition(
+    //       type: PageTransitionType.fade,
+    //       child: LoginPage(),
+    //     ),
+    //   );
+    // }
+    return newUser;
+  }
+
   TextEditingController _userAdd = TextEditingController();
   TextEditingController _pwdAdd = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -45,6 +70,12 @@ class LoginPageState extends State<LoginPage> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   Future<List<Login>> loginList;
   int count = 0;
+  @override
+  void initState() {
+    check_if_exists();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,25 +120,36 @@ class LoginPageState extends State<LoginPage> {
                       check = await databaseHelper.checkLogin(
                           _userAdd.text, _pwdAdd.text);
                       print("the reurned length is:${check.length}");
+                      check_if_exists().then((value) {
+                        if (value == true) {
+                          Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              child: DeckListTutorial(),
+                            ),
+                          );
+                        } else {
+                          //loginList = databaseHelper.getNoteList();
+                          // print("value is ${check[0]['id']}");
+                          // print("length is ${check.length}");
 
-                      //loginList = databaseHelper.getNoteList();
-                      // print("value is ${check[0]['id']}");
-                      // print("length is ${check.length}");
-
-                      // _form.currentState.validate();
-                      if (check.length != 0) {
-                        Navigator.pushReplacement(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            child: DeckList(check[0]['id']),
-                          ),
-                        );
-                      } else if (check.length <= 0) {
-                        _userAdd.clear();
-                        _pwdAdd.clear();
-                        _form.currentState.validate();
-                      }
+                          // _form.currentState.validate();
+                          if (check.length != 0) {
+                            Navigator.pushReplacement(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.fade,
+                                child: DeckList(check[0]['id']),
+                              ),
+                            );
+                          } else if (check.length <= 0) {
+                            _userAdd.clear();
+                            _pwdAdd.clear();
+                            _form.currentState.validate();
+                          }
+                        }
+                      });
                     },
                     child: Text("Login")),
                 SizedBox(),
