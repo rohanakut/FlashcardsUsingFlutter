@@ -1,3 +1,4 @@
+import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flashcards/tutorial/review_tutorial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
@@ -5,21 +6,26 @@ import 'dart:async';
 import 'package:page_transition/page_transition.dart';
 
 class ShowCardsTutorial extends StatefulWidget {
-  ShowCardsTutorialState createState() => new ShowCardsTutorialState();
+  int _id;
+  ShowCardsTutorial(this._id);
+  ShowCardsTutorialState createState() => new ShowCardsTutorialState(_id);
 }
 
 class ShowCardsTutorialState extends State<ShowCardsTutorial> {
+  int _id;
+  ShowCardsTutorialState(this._id);
   Intro intro = Intro(
-    stepCount: 2,
+    stepCount: 3,
     padding: EdgeInsets.zero,
 
     /// use defaultTheme, or you can implement widgetBuilder function yourself
     widgetBuilder: StepWidgetBuilder.useDefaultTheme(
       texts: [
-        'This is where all your cards of the deck will be stored. You can edit or delete the cards by clicking on the particular card.',
+        'Entered your deck? What are you waiting for? Start creating your flashcards. Edit or delete them just by clicking on them.',
         //'You can add more cards by clicking on the button.',
         //'You can edit or delete the cards by clicking on the particular card.',
-        'By clicking on the review button we can review and memorise all the cards that we have created here. Click on OK and press the Review Button to move to the next stage'
+        'Want to translate something? Or use a dictionary? HERE IT IS',
+        'Finished creating your flashcards?  Now lets memorise them just by clicking on REVIEW.'
       ],
       btnLabel: 'OK',
       showStepLabel: true,
@@ -54,9 +60,15 @@ class ShowCardsTutorialState extends State<ShowCardsTutorial> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            key: intro.keys[1],
+            icon: Icon(Icons.list),
+            onPressed: () {},
+          ),
           key: intro.keys[0],
           title: Text("Tutorial"),
         ),
+        // key: intro.keys[1],
         body: Column(children: [
           Expanded(
               // key: intro.keys[0],
@@ -97,13 +109,13 @@ class ShowCardsTutorialState extends State<ShowCardsTutorial> {
               height: 60,
               width: double.infinity,
               child: RaisedButton(
-                key: intro.keys[1],
+                key: intro.keys[2],
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
                     PageTransition(
                       type: PageTransitionType.fade,
-                      child: ReviewTutorial(),
+                      child: ReviewTutorial(_id),
                     ),
                   );
                 },

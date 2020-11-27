@@ -174,7 +174,7 @@ class DisplayPageState extends State<DisplayPage> {
           ),
           SizedBox(height: 15),
           TodayProgressChart(data),
-          DailyProgressChart(data1)
+          //  DailyProgressChart(data1)
         ],
       )),
     );

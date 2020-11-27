@@ -3,24 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'dart:async';
 import 'package:page_transition/page_transition.dart';
+import 'package:flashcards/drawer/drawer_for_page.dart';
 
 class DeckListTutorial extends StatefulWidget {
-  DeckListTutorialState createState() => new DeckListTutorialState();
+  int _id;
+  DeckListTutorial(this._id);
+  DeckListTutorialState createState() => new DeckListTutorialState(_id);
 }
 
 class DeckListTutorialState extends State<DeckListTutorial> {
+  int _id;
+  DeckListTutorialState(this._id);
   Intro intro = Intro(
-    stepCount: 5,
+    stepCount: 4,
     padding: EdgeInsets.zero,
 
     /// use defaultTheme, or you can implement widgetBuilder function yourself
     widgetBuilder: StepWidgetBuilder.useDefaultTheme(
       texts: [
-        'Welcome to the App. This small demonstration would help you explain the working ot the app.',
-        'This is the home page of the app. This is where all your decks will be stored. ',
-        'Clicking on the button would add more decks',
-        'This is where your decks will be reflected. You can create decks for verbs/nouns etc according to your use case. Clicking inside the deck will lead you to create the flashcards \n',
-        'We have already created a sample deck for you. Click on OK and press the deck name to move to the next stage'
+        'Hello, welcome to the app, I will guide you once, so that you can start using it seamlessly.',
+        'This is the Hall of Decks (A place where all your decks will be stored!)',
+        'Want to add more decks?Click here.',
+        'I have already created a sample deck for you. Click on OK and press the deck name to move to the next stage'
       ],
       btnLabel: 'OK',
       showStepLabel: true,
@@ -45,6 +49,7 @@ class DeckListTutorialState extends State<DeckListTutorial> {
           // key: intro.keys[0],
           title: Text("Tutorial"),
         ),
+        drawer: DrawerForPage(),
         body: Container(
             key: intro.keys[0],
             child: Column(children: <Widget>[
@@ -57,16 +62,16 @@ class DeckListTutorialState extends State<DeckListTutorial> {
                       itemBuilder: (BuildContext context, int i) {
                         //print(i);
                         return SizedBox(
-                            key: intro.keys[3],
+                            // key: intro.keys[3],
                             child: ListTile(
-                                key: intro.keys[4],
+                                key: intro.keys[3],
                                 onTap: () {
                                   print(i);
                                   Navigator.pushReplacement(
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      child: ShowCardsTutorial(),
+                                      child: ShowCardsTutorial(_id),
                                     ),
                                   );
                                 },

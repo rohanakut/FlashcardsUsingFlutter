@@ -16,10 +16,19 @@ class DictionaryState extends State<Dictionary> {
     String url;
     switch (value) {
       case 1:
-        url = 'https://www.collinsdictionary.com/dictionary/french-english/';
+        url = 'https://www.collinsdictionary.com/dictionary/german-english';
         break;
       case 2:
         url = 'https://www.collinsdictionary.com/dictionary/french-english/';
+        break;
+      case 3:
+        url = 'https://www.collinsdictionary.com/dictionary/italian-english';
+        break;
+      case 4:
+        url = 'https://www.collinsdictionary.com/dictionary/spanish-english';
+        break;
+      case 5:
+        url = 'https://www.collinsdictionary.com/dictionary/chinese-english';
         break;
     }
     url = url + text;
@@ -110,12 +119,24 @@ class DictionaryState extends State<Dictionary> {
                             value: selectedValueTop,
                             items: [
                               DropdownMenuItem(
-                                child: Text("Greman"),
+                                child: Text("German"),
                                 value: 1,
                               ),
                               DropdownMenuItem(
                                 child: Text("French"),
                                 value: 2,
+                              ),
+                              DropdownMenuItem(
+                                child: Text("Italian"),
+                                value: 3,
+                              ),
+                              DropdownMenuItem(
+                                child: Text("Spanish"),
+                                value: 4,
+                              ),
+                              DropdownMenuItem(
+                                child: Text("Chinese"),
+                                value: 5,
                               ),
                             ],
                             onChanged: (value) {
@@ -135,7 +156,7 @@ class DictionaryState extends State<Dictionary> {
                                 maxLines: 10,
                                 decoration: InputDecoration(
                                     hintText:
-                                        "Enter the word to be searched"))),
+                                        "Enter the word whose English meaning you want to know"))),
                         SizedBox(
                           height: 20,
                         ),

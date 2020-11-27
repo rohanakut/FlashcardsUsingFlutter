@@ -193,6 +193,7 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                         color: Colors.teal[300],
                         splashColor: Colors.teal,
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           cardKey.currentState.toggleCard();
                           //  setState(() {});
                         },

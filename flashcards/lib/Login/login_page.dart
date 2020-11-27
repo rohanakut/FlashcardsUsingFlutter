@@ -126,7 +126,7 @@ class LoginPageState extends State<LoginPage> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              child: DeckListTutorial(),
+                              child: DeckListTutorial(check[0]['id']),
                             ),
                           );
                         } else {

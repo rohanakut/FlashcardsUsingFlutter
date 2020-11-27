@@ -35,6 +35,18 @@ class GoogleTranslateState extends State<GoogleTranslate> {
       case 2:
         languageB = 'en';
         break;
+      case 3:
+        languageB = 'de';
+        break;
+      case 4:
+        languageB = 'zh-cn';
+        break;
+      case 5:
+        languageB = 'it';
+        break;
+      case 6:
+        languageB = 'es';
+        break;
     }
     var translation = await translator.translate(input, to: languageB);
     print("Source: $input\nTranslated: $translation");
@@ -115,26 +127,31 @@ class GoogleTranslateState extends State<GoogleTranslate> {
             Column(children: <Widget>[
               Container(
                   width: width - 30,
-                  margin: EdgeInsets.fromLTRB(12, 25, 0, 0),
-                  child: DropdownButton(
-                      isDense: true,
-                      value: selectedValueTop,
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("Auto"),
-                          value: 1,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("French"),
-                          value: 2,
-                        ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValueTop = value;
-                        });
-                        print(value);
-                      })),
+                  margin: EdgeInsets.fromLTRB(12, 25, 0, 15),
+                  child: Text(""
+                      // "Enter any text. It will Auto Detect the language",
+                      // style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+                      )
+                  // child: DropdownButton(
+                  //     isDense: true,
+                  //     value: selectedValueTop,
+                  //     items: [
+                  //       DropdownMenuItem(
+                  //         child: Text("Auto"),
+                  //         value: 1,
+                  //       ),
+                  //       DropdownMenuItem(
+                  //         child: Text("French"),
+                  //         value: 2,
+                  //       ),
+                  //     ],
+                  //     onChanged: (value) {
+                  //       setState(() {
+                  //         selectedValueTop = value;
+                  //       });
+                  //       print(value);
+                  //     })
+                  ),
               Container(
                 margin: EdgeInsets.fromLTRB(12, 0, 12, 12),
                 height: 150.0,
@@ -142,7 +159,8 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                   controller: _translateTop,
                   maxLines: 10,
                   decoration: InputDecoration(
-                    hintText: "Enter a message",
+                    hintText:
+                        "Enter any text. It will Auto Detect the language",
                     fillColor: Colors.grey[300],
                     filled: true,
                   ),
@@ -186,6 +204,22 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                         DropdownMenuItem(
                           child: Text("English"),
                           value: 2,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("German"),
+                          value: 3,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Chinese"),
+                          value: 4,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Italian"),
+                          value: 5,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Spanish"),
+                          value: 6,
                         ),
                       ],
                       onChanged: (value) {

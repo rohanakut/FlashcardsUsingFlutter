@@ -1,40 +1,100 @@
+import 'package:flashcards/decks/deck_list.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'dart:async';
 import 'package:page_transition/page_transition.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReviewTutorial extends StatefulWidget {
-  ReviewTutorialState createState() => new ReviewTutorialState();
+  int _id;
+  ReviewTutorial(this._id);
+  ReviewTutorialState createState() => new ReviewTutorialState(_id);
 }
 
 class ReviewTutorialState extends State<ReviewTutorial> {
+  int _id;
+  SharedPreferences checkUser;
+  ReviewTutorialState(this._id);
   GlobalKey<ReviewTutorialState> cardKey = GlobalKey<ReviewTutorialState>();
+  Timer timer;
   Intro intro = Intro(
-    stepCount: 3,
+    stepCount: 2,
     padding: EdgeInsets.zero,
 
     /// use defaultTheme, or you can implement widgetBuilder function yourself
     widgetBuilder: StepWidgetBuilder.useDefaultTheme(
       texts: [
-        'Here you can review all your flashcards one by one.  The card you created has both your questions and  answers. After you review your flashcard,you can select your response according to your comfort. Some words will be repeated according to your responses',
-        'You can select your comfort level here. Bad - not at all comfortable, Ok - somewhat comfortable, Good - Totally comfortable ',
-        'By clicking on the card you can check the meaning of the word.',
+        // 'Here you can review all your flashcards one by one.  The card you created has both your questions and  answers. After you review your flashcard,you can select your response according to your comfort. Some words will be repeated according to your responses',
+        // 'You can select your comfort level here. Bad - not at all comfortable, Ok - somewhat comfortable, Good - Totally comfortable ',
+        // 'By clicking on the card you can check the meaning of the word.',
+        'Lets start reviewing your flashcards. Cannot remember something? Just tap to view the answer. Give yourself a rating based on your performance.(Dont cheat!) .PS- Some words are repeated based on your ratings',
+        'Thats all friends!! You can start your learning experience now'
       ],
       btnLabel: 'OK',
       showStepLabel: true,
     ),
   );
+
+  void checkForChange() {
+    // do request here
+    if (intro.isDone == true) {
+      setState(() {
+        print("value is changed");
+
+        // change state according to result of request
+      });
+      Navigator.pushReplacement(
+        context,
+        PageTransition(
+          type: PageTransitionType.fade,
+          child: DeckList(_id),
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void check_if_exists() async {
+    checkUser = await SharedPreferences.getInstance();
+    checkUser.setBool('login', false);
+    // newUser = (checkUser.getBool('login') ?? true);
+    // print(newUser);
+    // if (newUser == false) {
+    //   // Navigator.pushReplacement(
+    //   //     context, new MaterialPageRoute(builder: (context) => MyDashboard()));
+    //   print("new user found");
+    // }
+    // } else {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     PageTransition(
+    //       type: PageTransitionType.fade,
+    //       child: LoginPage(),
+    //     ),
+    //   );
+    // }
+  }
+
   @override
   void initState() {
     // intro.start(context);
     // TODO: implement initState
+    check_if_exists();
     super.initState();
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => checkForChange());
     Timer(Duration(microseconds: 0), () {
       /// start the intro
       intro.start(context);
+      //print("intro is ${intro.isDone}");
     });
+    //print(intro.onFinish);
   }
 
   _renderBg() {
@@ -71,6 +131,7 @@ class ReviewTutorialState extends State<ReviewTutorial> {
             children: <Widget>[
               _renderAppBar(context),
               Expanded(
+                key: intro.keys[1],
                 flex: 4,
                 child: Card(
                   elevation: 0.0,
@@ -78,7 +139,7 @@ class ReviewTutorialState extends State<ReviewTutorial> {
                       left: 32.0, right: 32.0, top: 50.0, bottom: 50.0),
                   color: Color(0x00000000),
                   child: FlipCard(
-                    key: intro.keys[2],
+                    // key: intro.keys[2],
                     direction: FlipDirection.HORIZONTAL,
                     speed: 1000,
                     onFlipDone: (status) {
@@ -131,9 +192,13 @@ class ReviewTutorialState extends State<ReviewTutorial> {
                   ),
                 ),
               ),
-              Row(key: intro.keys[1], children: <Widget>[
+              Row(children: <Widget>[
                 Expanded(
-                    child: RaisedButton(onPressed: () {}, child: Text("Bad"))),
+                    child: RaisedButton(
+                        onPressed: () {
+                          print(intro.isDone);
+                        },
+                        child: Text("Bad"))),
                 Expanded(
                     child: RaisedButton(onPressed: () {}, child: Text("Ok"))),
                 Expanded(

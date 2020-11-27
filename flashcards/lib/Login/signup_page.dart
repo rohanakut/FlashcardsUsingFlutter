@@ -127,7 +127,7 @@ class SignupPageState extends State<SignupPage> {
                       if (_pwdAdd.text == _reEnterPwd.text &&
                           !(_pwdAdd.text.isEmpty) &&
                           !(_reEnterPwd.text.isEmpty)) {
-                        checkUser.setBool('firstTime', true);
+                        // checkUser.setBool('firstTime', true);
                         _check = await databaseHelper
                             .insertNote(Login(_userAdd.text, _pwdAdd.text));
                         print(_check);
