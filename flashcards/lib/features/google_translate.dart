@@ -161,7 +161,7 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                   decoration: InputDecoration(
                     hintText:
                         "Enter any text. It will Auto Detect the language",
-                    fillColor: Colors.grey[300],
+                    fillColor: Color(0xffDDF2FD),
                     filled: true,
                   ),
                   onChanged: (text) {
@@ -178,13 +178,34 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                 ),
               ),
             ]),
-            IconButton(
-              icon: Icon(Icons.swap_vert, color: Colors.grey[300], size: 60),
-              onPressed: () {
-                setState(() {
-                  _translateTop.text = _translateBottom.text;
-                });
-              },
+            // IconButton(
+            //   icon: Icon(Icons.swap_vert, color: Colors.grey[300], size: 60),
+            //   onPressed: () {
+            //     setState(() {
+            //       _translateTop.text = _translateBottom.text;
+            //     });
+            //   },
+            // ),
+            ShaderMask(
+              shaderCallback: (bounds) => RadialGradient(
+                // center: Alignment.center,
+                // radius: 0.6,
+                colors: [
+                  Color(0xFFBE94E6),
+                  Color(0xFFE1C5FC),
+                  Color(0xffE6D5FF),
+                ],
+                tileMode: TileMode.mirror,
+              ).createShader(bounds),
+              child: IconButton(
+                iconSize: 60,
+                icon: Icon(Icons.swap_vert, color: Colors.white, size: 60),
+                onPressed: () {
+                  setState(() {
+                    _translateTop.text = _translateBottom.text;
+                  });
+                },
+              ),
             ),
             // RaisedButton(onPressed: () {
             //   translation("hello", 1, 1);
@@ -239,7 +260,7 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                   maxLines: 10,
                   decoration: InputDecoration(
                     hintText: "Enter a message",
-                    fillColor: Colors.grey[300],
+                    fillColor: Color(0xFFEEFBDD),
                     filled: true,
                   ),
                 ),

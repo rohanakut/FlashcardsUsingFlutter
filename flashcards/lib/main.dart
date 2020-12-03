@@ -13,6 +13,7 @@ import 'package:flashcards/database/loaded_values.dart';
 import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/decks/deck_list.dart';
 import 'package:flashcards/navigator/first_time_user.dart';
+import 'package:flashcards/tutorial/introduction_screen_tutorial.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,7 +75,8 @@ class MyAppState extends State<MyApp> {
     //return new MaterialApp(home: FaceCard(_questions, _answers, _confidence));
     //return new MaterialApp(home: ShowCards(_questions));
     return new MaterialApp(
-        theme: ThemeData(primaryColor: Colors.black), home: LoginPage());
+        theme: ThemeData(primaryColor: Colors.black),
+        home: newUser == true ? IntroductionScreenTutorial(1) : DeckList(1));
     // return new MaterialApp(
     //     theme: ThemeData(primaryColor: Colors.black), home: LineChartWidget());
     //return new MaterialApp(home: LoadedValues());

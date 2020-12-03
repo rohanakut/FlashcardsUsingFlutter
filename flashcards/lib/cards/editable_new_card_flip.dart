@@ -146,11 +146,35 @@ class EditableNewCardFlipState extends State<EditableNewCardFlip>
                         ))
                   ])),
               Container(
-                  padding: EdgeInsets.only(right: 15, bottom: 10),
+                  padding: EdgeInsets.only(right: 15, bottom: 10, top: 10),
                   child: Align(
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
-                          child: Icon(Icons.save),
+                          //child: Icon(Icons.save),
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                            width: 60,
+                            height: 60,
+                            child: Icon(Icons.save, size: 30),
+
+                            // child: Align(
+                            //     alignment: Alignment.bottomRight,
+                            //     child: FloatingActionButton(
+                            //         child: Icon(Icons.add),
+                            //         onPressed: () {
+                            //           _addCard();
+                            //         })),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(colors: [
+                                  // Color(0xff03d7de),
+                                  // Color(0xFF8766ed),
+                                  // Color(0xFFe117fb),
+                                  Color(0xFF761cd4),
+                                  Color(0xFF2F7dd3),
+                                  Color(0xff21c47b),
+                                ])),
+                          ),
                           onPressed: () {
                             _updateCard();
                             Navigator.pop(context, 1);
@@ -165,19 +189,62 @@ class EditableNewCardFlipState extends State<EditableNewCardFlip>
                             //               ),
                             //             );
                           }))),
-              SizedBox(
-                  height: 60,
+              // SizedBox(
+              //     height: 60,
+              //     child: SizedBox(
+              //         width: double.infinity,
+              //         child: RaisedButton(
+              //           color: Colors.teal[300],
+              //           splashColor: Colors.teal,
+              //           onPressed: () {
+              //             cardKey.currentState.toggleCard();
+              //             //  setState(() {});
+              //           },
+              //           child: Text('Flip'),
+              //         ))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: SizedBox(
-                      width: double.infinity,
-                      child: RaisedButton(
-                        color: Colors.teal[300],
-                        splashColor: Colors.teal,
-                        onPressed: () {
+                      width: width - 60,
+                      height: 50.0,
+                      // padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: InkWell(
+                        // textColor: Colors.white,
+                        // color: Color(0xff03d7de),
+                        // shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(80.0)),
+
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF47a5cb),
+                                Color(0xFF5bc8cd),
+                                Color(0xffbaf2b3),
+                                // Color(0xFF761cd4),
+                                // Color(0xFF2F7dd3),
+                                // Color(0xff21c47b),
+                              ],
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+
+                          // padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: Center(
+                              child: Text('FLIP',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                  textAlign: TextAlign.center)),
+                        ),
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
                           cardKey.currentState.toggleCard();
-                          //  setState(() {});
                         },
-                        child: Text('Flip'),
-                      ))),
+                        // child: Text("Create a new Account"),
+                      )))
             ]));
   }
 }

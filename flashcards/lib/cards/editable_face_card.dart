@@ -213,7 +213,31 @@ class EditableFaceCardState extends State<EditableFaceCard> {
                           alignment: Alignment.bottomCenter,
                           child: FloatingActionButton(
                               heroTag: "delete",
-                              child: Icon(Icons.delete),
+                              // child: Icon(Icons.delete),
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                width: 60,
+                                height: 60,
+                                child: Icon(Icons.delete, size: 30),
+
+                                // child: Align(
+                                //     alignment: Alignment.bottomRight,
+                                //     child: FloatingActionButton(
+                                //         child: Icon(Icons.add),
+                                //         onPressed: () {
+                                //           _addCard();
+                                //         })),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(colors: [
+                                      // Color(0xff03d7de),
+                                      // Color(0xFF8766ed),
+                                      // Color(0xFFe117fb),
+                                      Color(0xFF761cd4),
+                                      Color(0xFF2F7dd3),
+                                      Color(0xff21c47b),
+                                    ])),
+                              ),
                               onPressed: () {
                                 DeleteAlertBox(
                                     context: context,
@@ -259,7 +283,31 @@ class EditableFaceCardState extends State<EditableFaceCard> {
                           alignment: Alignment.bottomCenter,
                           child: FloatingActionButton(
                               heroTag: "edit",
-                              child: Icon(Icons.edit),
+                              // child: Icon(Icons.edit),
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                width: 60,
+                                height: 60,
+                                child: Icon(Icons.edit, size: 30),
+
+                                // child: Align(
+                                //     alignment: Alignment.bottomRight,
+                                //     child: FloatingActionButton(
+                                //         child: Icon(Icons.add),
+                                //         onPressed: () {
+                                //           _addCard();
+                                //         })),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(colors: [
+                                      // Color(0xff03d7de),
+                                      // Color(0xFF8766ed),
+                                      // Color(0xFFe117fb),
+                                      Color(0xFF761cd4),
+                                      Color(0xFF2F7dd3),
+                                      Color(0xff21c47b),
+                                    ])),
+                              ),
                               onPressed: () {
                                 Navigator.pushReplacement(
                                   context,

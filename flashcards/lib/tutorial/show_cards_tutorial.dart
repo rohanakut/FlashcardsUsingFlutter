@@ -25,7 +25,7 @@ class ShowCardsTutorialState extends State<ShowCardsTutorial> {
         //'You can add more cards by clicking on the button.',
         //'You can edit or delete the cards by clicking on the particular card.',
         'Want to translate something? Or use a dictionary? HERE IT IS',
-        'Finished creating your flashcards?  Now lets memorise them just by clicking on REVIEW.'
+        'Lets go ahead in the tutorial. Click on the OK button and then on the REVIEW button to move ahead.'
       ],
       btnLabel: 'OK',
       showStepLabel: true,

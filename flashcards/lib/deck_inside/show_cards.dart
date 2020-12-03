@@ -24,6 +24,11 @@ class ShowCardsState extends State<ShowCards> {
   ShowCardsState(this._deckNum, this._id);
   List<String> _questions = [];
   List<String> _answers = [];
+  List<Color> cardColor = [
+    Color(0xffd0c3f7),
+    Color(0xFFb7ecef),
+    Color(0xFFedcaf8)
+  ];
   List<int> _cardId = [];
   int i;
   int _id;
@@ -98,6 +103,8 @@ class ShowCardsState extends State<ShowCards> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -121,15 +128,30 @@ class ShowCardsState extends State<ShowCards> {
                         color: Colors.grey[300],
                       )),
                   Spacer(),
-                  Container(
-                      padding: EdgeInsets.only(right: 15, bottom: 15),
-                      child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: FloatingActionButton(
-                              child: Icon(Icons.add),
-                              onPressed: () {
-                                _addCard();
-                              })))
+                  FloatingActionButton(
+                      //textColor: Colors.white,
+                      //  padding: const EdgeInsets.all(0.0),
+                      //  shape: RoundedRectangleBorder(
+                      //      borderRadius: BorderRadius.circular(80.0)),
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        child: Icon(
+                          Icons.add,
+                          size: 40,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(colors: [
+                              Color(0xff03d7de),
+                              Color(0xFF8766ed),
+                              Color(0xFFe117fb),
+                            ])),
+                      ),
+                      //   child: Icon(Icons.add),
+                      onPressed: () {
+                        _addCard();
+                      }),
                 ]))
           : Column(children: [
               Expanded(
@@ -146,7 +168,7 @@ class ShowCardsState extends State<ShowCards> {
                         GestureDetector(
                           child: Container(
                               padding: const EdgeInsets.all(8),
-                              color: Colors.teal[100],
+                              color: cardColor[(index + 1) % 3],
                               child: Center(
                                   child: Text(question,
                                       style: Theme.of(context)
@@ -198,30 +220,94 @@ class ShowCardsState extends State<ShowCards> {
                     .values
                     .toList(),
               )),
-              Container(
-                  padding: EdgeInsets.only(right: 15, bottom: 10),
-                  child: Align(
-                      alignment: Alignment.bottomRight,
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                      padding: const EdgeInsets.all(15.0),
                       child: FloatingActionButton(
-                          child: Icon(Icons.add),
+
+                          //textColor: Colors.white,
+                          //  padding: const EdgeInsets.all(0.0),
+                          //  shape: RoundedRectangleBorder(
+                          //      borderRadius: BorderRadius.circular(80.0)),
+
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                            width: 60,
+                            height: 60,
+                            child: Icon(Icons.add, size: 40),
+
+                            // child: Align(
+                            //     alignment: Alignment.bottomRight,
+                            //     child: FloatingActionButton(
+                            //         child: Icon(Icons.add),
+                            //         onPressed: () {
+                            //           _addCard();
+                            //         })),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(colors: [
+                                  // Color(0xff03d7de),
+                                  // Color(0xFF8766ed),
+                                  // Color(0xFFe117fb),
+                                  Color(0xFF761cd4),
+                                  Color(0xFF2F7dd3),
+                                  Color(0xff21c47b),
+                                ])),
+                          ),
+                          //   child: Icon(Icons.add),
                           onPressed: () {
                             _addCard();
                           }))),
-              SizedBox(
-                  height: 60,
-                  width: double.infinity,
-                  child: RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.fade,
-                          child: FlipFaceCard(_deckNum, _id),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: SizedBox(
+                      width: width - 60,
+                      height: 50.0,
+                      // padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: InkWell(
+                        // textColor: Colors.white,
+                        // color: Color(0xff03d7de),
+                        // shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(80.0)),
+
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF47a5cb),
+                                Color(0xFF5bc8cd),
+                                Color(0xffbaf2b3),
+                                // Color(0xFF761cd4),
+                                // Color(0xFF2F7dd3),
+                                // Color(0xff21c47b),
+                              ],
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+
+                          // padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: Center(
+                              child: Text('REVIEW',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                  textAlign: TextAlign.center)),
                         ),
-                      );
-                    },
-                    child: Text("Review"),
-                  )),
+                        onTap: () {
+                          print("in ere");
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              child: FlipFaceCard(_deckNum, _id),
+                            ),
+                          );
+                        },
+                        // child: Text("Create a new Account"),
+                      )))
             ]),
       // Align(
       //     alignment: Alignment.bottomRight,

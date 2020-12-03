@@ -3,6 +3,7 @@ import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/login.dart';
 import 'package:flashcards/decks/deck_list.dart';
 import 'package:flashcards/tutorial/deck_list_tutorial.dart';
+import 'package:flashcards/tutorial/introduction_screen_tutorial.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -126,7 +127,7 @@ class LoginPageState extends State<LoginPage> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              child: DeckListTutorial(check[0]['id']),
+                              child: IntroductionScreenTutorial(check[0]['id']),
                             ),
                           );
                         } else {
@@ -154,6 +155,24 @@ class LoginPageState extends State<LoginPage> {
                     child: Text("Login")),
                 SizedBox(),
                 RaisedButton(
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(80.0)),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xff03d7de),
+                            Color(0xFF8766ed),
+                            Color(0xFFe117fb),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(80.0))),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: const Text('Gradient Button',
+                        style: TextStyle(fontSize: 20)),
+                  ),
                   onPressed: () {
                     print("in ere");
                     Navigator.push(
@@ -164,7 +183,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                     );
                   },
-                  child: Text("Create a new Account"),
+                  // child: Text("Create a new Account"),
                 )
               ],
             )));

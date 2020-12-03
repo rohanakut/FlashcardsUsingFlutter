@@ -90,7 +90,7 @@ class EditableNewFaceCardState extends State<EditableNewFaceCard> {
                   child: Align(
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
-                          child: Icon(Icons.save),
+                          child: Icon(Icons.save, size: 30),
                           onPressed: () {
                             _updateCard();
                           }))),

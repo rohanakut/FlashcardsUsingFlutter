@@ -159,7 +159,7 @@ class ReviewTutorialState extends State<ReviewTutorial> {
                             //flex: 2,
                             child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
-                                child: Text("My first Card",
+                                child: Text("Bonjour",
                                     style: TextStyle(
                                         fontSize: 15, color: Colors.white))),
                           ),
@@ -182,7 +182,7 @@ class ReviewTutorialState extends State<ReviewTutorial> {
                               child: SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
                                   child: Text(
-                                      "This is the answer to my first card",
+                                      "It means hello in French",
                                       style: TextStyle(
                                           fontSize: 15, color: Colors.white)))),
                           Spacer()

@@ -29,6 +29,17 @@ class DeckListState extends State<DeckList>
   int _selected = 0;
   int _check;
   List<Decks> deckList;
+  List<Color> cardColor = [
+    Color(0xffd0c3f7),
+    Color(0xFFb7ecef),
+    Color(0xFFedcaf8)
+  ];
+
+  List<Color> borderColor = [
+    Color(0xffe7c3f7),
+    Color(0xffB7ECEF),
+    Color(0xfff8cae8),
+  ];
   // List<Chart> chartList;
 
   void _showToast() {
@@ -207,20 +218,32 @@ class DeckListState extends State<DeckList>
                               itemCount: _to_be_shown.length,
                               itemBuilder: (BuildContext context, int i) {
                                 //print(i);
-                                return ListTile(
-                                    onTap: () {
-                                      print(i);
-                                      Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.fade,
-                                          child: ShowCards(i + 1, _id),
+                                return Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 3, 10, 0),
+                                    child: Container(
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: cardColor[(i + 1) % 3],
+                                          // border: Border.all(
+                                          //     width: 4.0,
+                                          //     color: borderColor[(i + 1) % 3],
+                                          //     style: BorderStyle.solid),
                                         ),
-                                      );
-                                    },
-                                    leading: Icon(Icons.list),
-                                    trailing: Icon(Icons.auto_awesome),
-                                    title: Text('${_to_be_shown[i]}'));
+                                        child: ListTile(
+                                            onTap: () {
+                                              print(i);
+                                              Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType.fade,
+                                                  child: ShowCards(i + 1, _id),
+                                                ),
+                                              );
+                                            },
+                                            leading: Icon(Icons.list),
+                                            trailing: Icon(Icons.auto_awesome),
+                                            title:
+                                                Text('${_to_be_shown[i]}'))));
                               })
                           //: List<Widget>
                           ),
@@ -228,7 +251,26 @@ class DeckListState extends State<DeckList>
         floatingActionButton: _selected == 1
             ? null
             : new FloatingActionButton(
-                child: Icon(Icons.add),
+                //textColor: Colors.white,
+                //  padding: const EdgeInsets.all(0.0),
+                //  shape: RoundedRectangleBorder(
+                //      borderRadius: BorderRadius.circular(80.0)),
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  child: Icon(
+                    Icons.add,
+                    size: 40,
+                  ),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(colors: [
+                        Color(0xFF761cd4),
+                        Color(0xFF2F7dd3),
+                        Color(0xff21c47b),
+                      ])),
+                ),
+                //   child: Icon(Icons.add),
                 onPressed: () {
                   changeAnimation();
                 }));

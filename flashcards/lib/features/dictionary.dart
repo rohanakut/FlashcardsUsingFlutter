@@ -16,19 +16,19 @@ class DictionaryState extends State<Dictionary> {
     String url;
     switch (value) {
       case 1:
-        url = 'https://www.collinsdictionary.com/dictionary/german-english';
+        url = 'https://www.collinsdictionary.com/dictionary/german-english/';
         break;
       case 2:
         url = 'https://www.collinsdictionary.com/dictionary/french-english/';
         break;
       case 3:
-        url = 'https://www.collinsdictionary.com/dictionary/italian-english';
+        url = 'https://www.collinsdictionary.com/dictionary/italian-english/';
         break;
       case 4:
-        url = 'https://www.collinsdictionary.com/dictionary/spanish-english';
+        url = 'https://www.collinsdictionary.com/dictionary/spanish-english/';
         break;
       case 5:
-        url = 'https://www.collinsdictionary.com/dictionary/chinese-english';
+        url = 'https://www.collinsdictionary.com/dictionary/chinese-english/';
         break;
     }
     url = url + text;
@@ -102,12 +102,12 @@ class DictionaryState extends State<Dictionary> {
         body: Container(
             padding:
                 const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 30),
-            child: Card(
+            child: Container(
 
                 // width: width - 80,
                 // height: height - 100,
                 //  padding: const EdgeInsets.only(left: 30, right: 30, top: 80),
-                color: Colors.teal[100],
+                //   color: Colors.teal[100],
                 child: Padding(
                     padding:
                         const EdgeInsets.only(left: 30, right: 30, top: 80),
@@ -160,19 +160,70 @@ class DictionaryState extends State<Dictionary> {
                         SizedBox(
                           height: 20,
                         ),
-                        RaisedButton(
-                            onPressed: () {
-                              checkConnection().then((value) {
-                                if (value != null && value) {
-                                  _launchURL(_textDict.text, selectedValueTop);
-                                  print("internet present");
-                                } else {
-                                  showNotifications();
-                                }
-                              });
-                              // _launchURL();
-                            },
-                            child: Text("Search Dictionary"))
+                        // RaisedButton(
+                        //     onPressed: () {
+                        //       checkConnection().then((value) {
+                        //         if (value != null && value) {
+                        //           _launchURL(_textDict.text, selectedValueTop);
+                        //           print("internet present");
+                        //         } else {
+                        //           showNotifications();
+                        //         }
+                        //       });
+                        //       // _launchURL();
+                        //     },
+                        //     child: Text("Search Dictionary"))
+                        Padding(
+                            padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                            child: SizedBox(
+                                width: width - 60,
+                                height: 50.0,
+                                // padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                child: InkWell(
+                                  // textColor: Colors.white,
+                                  // color: Color(0xff03d7de),
+                                  // shape: RoundedRectangleBorder(
+                                  //     borderRadius: BorderRadius.circular(80.0)),
+
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: <Color>[
+                                          Color(0xFF47a5cb),
+                                          Color(0xFF5bc8cd),
+                                          Color(0xffbaf2b3),
+                                          // Color(0xFF761cd4),
+                                          // Color(0xFF2F7dd3),
+                                          // Color(0xff21c47b),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+
+                                    // padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                    child: Center(
+                                        child: Text('Search Dictionary',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white),
+                                            textAlign: TextAlign.center)),
+                                  ),
+                                  onTap: () {
+                                    checkConnection().then((value) {
+                                      if (value != null && value) {
+                                        _launchURL(
+                                            _textDict.text, selectedValueTop);
+                                        print("internet present");
+                                      } else {
+                                        showNotifications();
+                                      }
+                                    });
+                                  },
+                                  // child: Text("Create a new Account"),
+                                )))
                       ],
                     )))));
     // TODO: implement build
