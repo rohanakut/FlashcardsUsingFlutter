@@ -32,7 +32,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   SharedPreferences checkUser;
   bool newUser;
-  void check_if_exists() async {
+  Future<int> check_if_exists() async {
     checkUser = await SharedPreferences.getInstance();
     newUser = (checkUser.getBool('login') ?? true);
     print(newUser);
@@ -50,11 +50,14 @@ class MyAppState extends State<MyApp> {
     //     ),
     //   );
     // }
+    return 0;
   }
 
   @override
   void initState() {
-    check_if_exists();
+    check_if_exists().then((value) {
+      setState(() {});
+    });
     // TODO: implement initState
     super.initState();
   }

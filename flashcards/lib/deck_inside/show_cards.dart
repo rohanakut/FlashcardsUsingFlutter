@@ -128,30 +128,34 @@ class ShowCardsState extends State<ShowCards> {
                         color: Colors.grey[300],
                       )),
                   Spacer(),
-                  FloatingActionButton(
-                      //textColor: Colors.white,
-                      //  padding: const EdgeInsets.all(0.0),
-                      //  shape: RoundedRectangleBorder(
-                      //      borderRadius: BorderRadius.circular(80.0)),
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        child: Icon(
-                          Icons.add,
-                          size: 40,
-                        ),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(colors: [
-                              Color(0xff03d7de),
-                              Color(0xFF8766ed),
-                              Color(0xFFe117fb),
-                            ])),
-                      ),
-                      //   child: Icon(Icons.add),
-                      onPressed: () {
-                        _addCard();
-                      }),
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: FloatingActionButton(
+                              //textColor: Colors.white,
+                              //  padding: const EdgeInsets.all(0.0),
+                              //  shape: RoundedRectangleBorder(
+                              //      borderRadius: BorderRadius.circular(80.0)),
+                              child: Container(
+                                width: 60,
+                                height: 60,
+                                child: Icon(
+                                  Icons.add,
+                                  size: 40,
+                                ),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(colors: [
+                                      Color(0xFF761cd4),
+                                      Color(0xFF2F7dd3),
+                                      Color(0xff21c47b),
+                                    ])),
+                              ),
+                              //   child: Icon(Icons.add),
+                              onPressed: () {
+                                _addCard();
+                              }))),
                 ]))
           : Column(children: [
               Expanded(

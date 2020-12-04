@@ -14,7 +14,8 @@ class IntroductionScreenTutorial extends StatelessWidget {
             pages: [
           PageViewModel(
               title: "Hello",
-              body: "Welcome to the MultiLanguage Flashcard App",
+              body:
+                  "Welcome to the MultiLanguage Flashcard App. Lets start with a tutorial to help you navigate the app.",
               decoration: PageDecoration(
                 titleTextStyle:
                     TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),

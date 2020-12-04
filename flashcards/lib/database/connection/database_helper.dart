@@ -59,11 +59,11 @@ class DatabaseHelper {
         'CREATE TABLE $tableName($userId INTEGER PRIMARY KEY AUTOINCREMENT, $userName TEXT UNIQUE, '
         '$password TEXT)');
     await db.execute(
-        "CREATE TABLE $tableName1($deckNumber INTEGER PRIMARY KEY AUTOINCREMENT, deckName  TEXT NOT NULL ,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'))");
+        "CREATE TABLE $tableName1($deckNumber INTEGER PRIMARY KEY AUTOINCREMENT, deckName  TEXT NOT NULL ,$userId INTEGER NOT NULL)"); //,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'))");
     await db.execute(
-        "CREATE TABLE $tableName2(cardid INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, $deckNumber INTEGER NOT NULL,confidence INTEGER NOT NULL,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'), FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
+        "CREATE TABLE $tableName2(cardid INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, $deckNumber INTEGER NOT NULL,confidence INTEGER NOT NULL,$userId INTEGER NOT NULL, FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))"); //FOREIGN KEY($userId) REFERENCES  $tableName('$userId'),
     await db.execute(
-        "CREATE TABLE $tableName3(chartid INTEGER PRIMARY KEY AUTOINCREMENT, percentage FLOAT NOT NULL,good INTEGER NOT NULL, bad INTEGER NOT NULL, ok INTEGER NOT NULL,$deckNumber INTEGER NOT NULL,$userId INTEGER NOT NULL,FOREIGN KEY($userId) REFERENCES  $tableName('$userId'), FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))");
+        "CREATE TABLE $tableName3(chartid INTEGER PRIMARY KEY AUTOINCREMENT, percentage FLOAT NOT NULL,good INTEGER NOT NULL, bad INTEGER NOT NULL, ok INTEGER NOT NULL,$deckNumber INTEGER NOT NULL,$userId INTEGER NOT NULL, FOREIGN KEY($deckNumber)REFERENCES $tableName1('$deckNumber'))"); //FOREIGN KEY($userId) REFERENCES  $tableName('$userId'),
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
