@@ -25,7 +25,6 @@ dependencies:
     sdk: flutter
   sqflite:
   path_provider:
-  overlay_support:
   delayed_display:
   fluttertoast: ^6.0.0
   page_transition:
@@ -38,9 +37,10 @@ dependencies:
   flutter_flexible_toast:
   url_launcher:
   flutter_awesome_alert_box:
-  flutter_intro:
+  flutter_intro: 0.8.0
   shared_preferences:
   introduction_screen:
+  overlay_support: 1.0.5-hotfix1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

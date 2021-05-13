@@ -22,7 +22,7 @@ class ReviewTutorialState extends State<ReviewTutorial> {
   Intro intro = Intro(
     stepCount: 2,
     padding: EdgeInsets.zero,
-
+isDone: 0,
     /// use defaultTheme, or you can implement widgetBuilder function yourself
     widgetBuilder: StepWidgetBuilder.useDefaultTheme(
       texts: [
@@ -39,7 +39,8 @@ class ReviewTutorialState extends State<ReviewTutorial> {
 
   void checkForChange() {
     // do request here
-    if (intro.isDone == true) {
+
+    if (intro.isDone == 1) {
       setState(() {
         print("value is changed");
 
@@ -53,6 +54,7 @@ class ReviewTutorialState extends State<ReviewTutorial> {
         ),
       );
     }
+
   }
 
   @override
@@ -196,7 +198,7 @@ class ReviewTutorialState extends State<ReviewTutorial> {
                 Expanded(
                     child: RaisedButton(
                         onPressed: () {
-                          print(intro.isDone);
+                          print("Done");
                         },
                         child: Text("Bad"))),
                 Expanded(
