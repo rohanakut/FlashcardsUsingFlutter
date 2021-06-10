@@ -106,7 +106,7 @@ class GoogleTranslateState extends State<GoogleTranslate> {
     super.initState();
   }
 
-  AppBar appBar = AppBar(title: Text('Demo'));
+  AppBar appBar = AppBar(title: Text('Translate'));
   int selectedValueTop = 1;
   int selectedValueBottom = 1;
   @override

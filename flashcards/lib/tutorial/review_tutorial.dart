@@ -22,7 +22,8 @@ class ReviewTutorialState extends State<ReviewTutorial> {
   Intro intro = Intro(
     stepCount: 2,
     padding: EdgeInsets.zero,
-isDone: 0,
+    isDone: 0,
+
     /// use defaultTheme, or you can implement widgetBuilder function yourself
     widgetBuilder: StepWidgetBuilder.useDefaultTheme(
       texts: [
@@ -54,7 +55,6 @@ isDone: 0,
         ),
       );
     }
-
   }
 
   @override
@@ -183,8 +183,7 @@ isDone: 0,
                               //flex: 2,
                               child: SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
-                                  child: Text(
-                                      "It means hello in French",
+                                  child: Text("It means hello in French",
                                       style: TextStyle(
                                           fontSize: 15, color: Colors.white)))),
                           Spacer()

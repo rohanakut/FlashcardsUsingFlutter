@@ -44,16 +44,16 @@ class DrawerForPage extends StatelessWidget {
               // Then close the drawer
             },
           ),
-          ListTile(
-            title: Text('Logout'),
-            onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-          ),
+          // ListTile(
+          //   title: Text('Logout'),
+          //   onTap: () {
+          //     // Update the state of the app
+          //     // ...
+          //     // Then close the drawer
+          //     Navigator.pushReplacement(context,
+          //         MaterialPageRoute(builder: (context) => LoginPage()));
+          //   },
+          // ),
         ],
       ),
     );
