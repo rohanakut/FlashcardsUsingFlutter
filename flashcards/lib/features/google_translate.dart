@@ -73,18 +73,6 @@ class GoogleTranslateState extends State<GoogleTranslate> {
         icon: Icons.wifi,
         duration: EdgeAlert.LENGTH_LONG,
         backgroundColor: Colors.black);
-
-    // FlutterFlexibleToast.showToast(
-    //     message: "Short Loading 2 Sec Toast",
-    //     toastLength: Toast.LENGTH_LONG,
-    //     toastGravity: ToastGravity.BOTTOM,
-    //     icon: ICON.ERROR,
-    //     radius: 100,
-    //     elevation: 10,
-    //     imageSize: 35,
-    //     textColor: Colors.white,
-    //     backgroundColor: Colors.black,
-    //     timeInSeconds: 2);
   }
 
   @override
@@ -131,27 +119,7 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                   child: Text(""
                       // "Enter any text. It will Auto Detect the language",
                       // style: TextStyle(fontSize: 13, color: Colors.grey[400]),
-                      )
-                  // child: DropdownButton(
-                  //     isDense: true,
-                  //     value: selectedValueTop,
-                  //     items: [
-                  //       DropdownMenuItem(
-                  //         child: Text("Auto"),
-                  //         value: 1,
-                  //       ),
-                  //       DropdownMenuItem(
-                  //         child: Text("French"),
-                  //         value: 2,
-                  //       ),
-                  //     ],
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         selectedValueTop = value;
-                  //       });
-                  //       print(value);
-                  //     })
-                  ),
+                      )),
               Container(
                 margin: EdgeInsets.fromLTRB(12, 0, 12, 12),
                 height: 150.0,
@@ -178,14 +146,6 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                 ),
               ),
             ]),
-            // IconButton(
-            //   icon: Icon(Icons.swap_vert, color: Colors.grey[300], size: 60),
-            //   onPressed: () {
-            //     setState(() {
-            //       _translateTop.text = _translateBottom.text;
-            //     });
-            //   },
-            // ),
             ShaderMask(
               shaderCallback: (bounds) => RadialGradient(
                 // center: Alignment.center,
@@ -207,9 +167,6 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                 },
               ),
             ),
-            // RaisedButton(onPressed: () {
-            //   translation("hello", 1, 1);
-            // }),
             Column(children: <Widget>[
               Container(
                   margin: EdgeInsets.fromLTRB(12, 12, 12, 0),
@@ -252,7 +209,6 @@ class GoogleTranslateState extends State<GoogleTranslate> {
                         print(value);
                       })),
               Container(
-                //margin: EdgeInsets.all(12),
                 margin: EdgeInsets.fromLTRB(12, 0, 12, 12),
                 height: 150.0,
                 child: TextField(
