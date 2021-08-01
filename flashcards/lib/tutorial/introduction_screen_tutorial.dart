@@ -4,7 +4,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 class IntroductionScreenTutorial extends StatelessWidget {
-  int _id;
+  String _id;
   IntroductionScreenTutorial(this._id);
   @override
   Widget build(BuildContext context) {

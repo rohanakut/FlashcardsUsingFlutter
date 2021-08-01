@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 class EditableAnswerCard extends StatelessWidget {
-  int _deckNum, _id, _cardId;
-  String _answer, _question;
+  String _answer, _question, _deckNum, _cardId, _id;
   EditableAnswerCard(
       this._answer, this._question, this._deckNum, this._id, this._cardId);
   @override

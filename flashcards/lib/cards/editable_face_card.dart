@@ -1,19 +1,15 @@
-import 'package:flashcards/cards/editable_answer_card.dart';
 import 'package:flashcards/cards/editable_new_card_flip.dart';
-import 'package:flashcards/cards/editable_new_face_card.dart';
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
-import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:flip_card/flip_card.dart';
-import 'package:flashcards/database/models/cards.dart';
 
 class EditableFaceCard extends StatefulWidget {
-  String question, answer;
-  int _id, _deckNum, _cardId;
+  String question, answer, _deckNum, _cardId, _id;
   EditableFaceCard(
       this.question, this._deckNum, this._id, this.answer, this._cardId);
   EditableFaceCardState createState() =>
@@ -21,21 +17,24 @@ class EditableFaceCard extends StatefulWidget {
 }
 
 class EditableFaceCardState extends State<EditableFaceCard> {
-  String question, answer;
-  int _id, _deckNum, _cardId, _check;
+  String question, answer, _deckNum, _id, _cardId;
+  int _check;
+  AmplifyDb amplifyObj = AmplifyDb();
   EditableFaceCardState(
       this.question, this._deckNum, this._id, this.answer, this._cardId);
 
   //print("answer is: $answer");
   DatabaseHelper databaseHelper = DatabaseHelper();
 
-  Future<int> _deleteCard(int id, int cardId) async {
-    _check = await databaseHelper.deleteCard(cardId, id);
+  Future<int> _deleteCard(String id, String cardId) async {
+    //_check = await databaseHelper.deleteCard(cardId, id);
+    _check = await amplifyObj.deleteCardData(cardId);
   }
 
   void _addCard(String _answer) async {
-    _check = await databaseHelper
-        .insertCard(Cards(_cardAdd.text, _answer, _deckNum, 3, _id));
+    // _check = await databaseHelper
+    //     .insertCard(Cards(_cardAdd.text, _answer, _deckNum, 3, _id));
+    _check = await amplifyObj.addCardData(question, _answer, 3, _deckNum, _id);
     print(_check);
   }
 

@@ -6,13 +6,13 @@ import 'package:page_transition/page_transition.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
 
 class DeckListTutorial extends StatefulWidget {
-  int _id;
+  String _id;
   DeckListTutorial(this._id);
   DeckListTutorialState createState() => new DeckListTutorialState(_id);
 }
 
 class DeckListTutorialState extends State<DeckListTutorial> {
-  int _id;
+  String _id;
   DeckListTutorialState(this._id);
   Intro intro = Intro(
     stepCount: 3,

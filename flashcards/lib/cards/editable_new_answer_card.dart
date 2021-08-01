@@ -1,4 +1,5 @@
 import 'package:flashcards/cards/editable_new_face_card.dart';
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,8 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:flutter/material.dart';
 
 class EditableNewAnswerCard extends StatefulWidget {
-  String _question, _answer;
-  int _deckNum, _id, _cardId;
+  String _question, _answer, _deckNum, _cardId, _id;
   EditableNewAnswerCard(
       this._question, this._answer, this._deckNum, this._id, this._cardId);
   EditableNewAnswerCardState createState() => new EditableNewAnswerCardState(
@@ -15,17 +15,17 @@ class EditableNewAnswerCard extends StatefulWidget {
 }
 
 class EditableNewAnswerCardState extends State<EditableNewAnswerCard> {
-  String _question, _answer;
-  int _deckNum, _id, _cardId;
+  String _question, _answer, _deckNum, _cardId, _id;
   TextEditingController _cardEditAnswer = TextEditingController();
   DatabaseHelper databaseHelper = DatabaseHelper();
+  AmplifyDb amplifyObj = AmplifyDb();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   EditableNewAnswerCardState(
       this._question, this._answer, this._deckNum, this._id, this._cardId);
 
   void _updateCard() async {
-    int _check = await databaseHelper
-        .updateCard(_cardId, _question, _cardEditAnswer.text)
+    int _check = await amplifyObj
+        .updateCardData(_cardId, _question, _cardEditAnswer.text)
         .then((value) {
       Navigator.pushReplacement(
         context,

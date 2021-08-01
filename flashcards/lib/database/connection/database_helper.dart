@@ -2,10 +2,12 @@
 
 import 'dart:io';
 
+import 'package:amplify_flutter/amplify.dart';
 import 'package:flashcards/database/models/cards.dart';
 import 'package:flashcards/database/models/chart.dart';
 import 'package:flashcards/database/models/decks.dart';
 import 'package:flashcards/database/models/login.dart';
+import 'package:flashcards/models/ModelProvider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -109,6 +111,21 @@ class DatabaseHelper {
       // print(e);
     }
     return result;
+  }
+
+  Future addDeckData(
+    String deckname,
+  ) async {
+    DeckListTable newPost = DeckListTable(deckName: deckname, CardsLists: []);
+    await Amplify.DataStore.save(newPost)
+        .then((value) => print("data sent to aws"));
+  }
+
+  Future<List<DeckListTable>> getAllChatData() async {
+    List<DeckListTable> chatData =
+        await Amplify.DataStore.query(DeckListTable.classType);
+    print(chatData);
+    return chatData;
   }
 
   Future<int> updateConfidence(Cards card) async {

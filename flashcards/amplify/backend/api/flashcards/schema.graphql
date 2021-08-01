@@ -1,0 +1,35 @@
+type ChartListTable @model @auth(rules: [{allow: public}]) @key(name: "byCardsListTable", fields: ["cardslisttableID"]) {
+  id: ID!
+  good: Int
+  ok: Int
+  bad: Int
+  percentage: Float
+  cardslisttableID: ID
+}
+
+type LoginTable @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userName: String
+  Password: String
+  DeckListTables: [DeckListTable] @connection(keyName: "byLoginTable", fields: ["id"])
+  CardsListTables: [CardsListTable] @connection(keyName: "byLoginTable", fields: ["id"])
+}
+
+type CardsListTable @model @auth(rules: [{allow: public}]) @key(name: "byLoginTable", fields: ["logintableID"]) @key(name: "byDeckListTable", fields: ["decklisttableID"]) {
+  id: ID!
+  question: String
+  answer: String
+  confidence: Int
+  logintableID: ID
+  ChartChartList: [ChartListTable] @connection(keyName: "byCardsListTable", fields: ["id"])
+  decklisttableID: ID
+}
+
+type DeckListTable @model @auth(rules: [{allow: public}]) @key(name: "byLoginTable", fields: ["logintableID"]) {
+  id: ID!
+  deckName: String
+  CardsLists: [CardsListTable] @connection(keyName: "byDeckListTable", fields: ["id"])
+  logintableID: ID
+  ChartDeckList: ChartListTable @connection
+}
+ 

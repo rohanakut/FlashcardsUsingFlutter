@@ -1,42 +1,39 @@
-import 'package:flashcards/cards/editable_answer_card.dart';
-import 'package:flashcards/cards/editable_new_face_card.dart';
 import 'package:flashcards/chart/display_page.dart';
-import 'package:flashcards/chart/line_chart_widget.dart';
+import 'package:flashcards/chart/test_page.dart';
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
+import 'package:flashcards/models/CardsListTable.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:flip_card/flip_card.dart';
-import 'package:flashcards/database/models/cards.dart';
-import 'package:flashcards/chart/line_chart_widget.dart';
-import 'package:flashcards/database/models/chart.dart';
 
 class FlipFaceCard extends StatefulWidget {
   List<String> _questions;
   List<String> _answers;
   List<int> _confidence;
-  int _deckNum;
-  int _id;
+  String _deckNum, _id;
   FlipFaceCard(this._deckNum, this._id);
   FlipFaceCardState createState() => new FlipFaceCardState(_deckNum, _id);
 }
 
 class FlipFaceCardState extends State<FlipFaceCard> {
   bool _flag = true;
-  List<Cards> cardList;
+  List<CardsListTable> cardList;
   int count = 0, _good = 0, _bad = 0, _ok = 0;
   List<String> _questions = [];
   List<String> _answers = [];
   List<int> _confidence = [];
-  int _deckNum;
+  List<String> _cardId = [];
+  String _deckNum;
   int i;
   int _repetitions;
-  int _id;
+  String _id;
   bool cardStatus;
   DatabaseHelper databaseHelper = DatabaseHelper();
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
-
+  AmplifyDb amplifyObj = AmplifyDb();
   FlipFaceCardState(this._deckNum, this._id);
   _renderBg() {
     return Container(
@@ -57,9 +54,10 @@ class FlipFaceCardState extends State<FlipFaceCard> {
     );
   }
 
-  Future<List<Cards>> loadCards() async {
+  Future<List<CardsListTable>> loadCards() async {
     print("deck num is $_deckNum");
-    cardList = await databaseHelper.getCardListForReviw(_deckNum, _id);
+    cardList = await amplifyObj.getCardDataForReview(_deckNum, _id);
+    //cardList = await databaseHelper.getCardListForReviw(_deckNum, _id);
     print("length is : ${cardList.length}");
     //cardList.map((item) => _questions.insert(0, item.questions)).toList();
     return cardList;
@@ -86,8 +84,11 @@ class FlipFaceCardState extends State<FlipFaceCard> {
       // print("comfi is ${_confidence[i]}");
       // print(_id);
       // // print(e.);
-      int _check = await databaseHelper.updateConfidence(
-          Cards(_questions[i], _answers[i], _deckNum, _confidence[i], _id));
+
+      // int _check = await databaseHelper.updateConfidence(
+      //     Cards(_questions[i], _answers[i], _deckNum, _confidence[i], _id));
+      int _check = await amplifyObj.updateConfidenceData(
+          _cardId[i], _questions[i], _answers[i], _confidence[i], _deckNum);
     }
 
     //print("check is: $_check");
@@ -95,8 +96,7 @@ class FlipFaceCardState extends State<FlipFaceCard> {
     print(_good);
     print(_ok);
     print(_bad);
-    await databaseHelper
-        .insertChart(Chart(_deckNum, _percentage, _id, _good, _ok, _bad));
+    await amplifyObj.insertChart(_deckNum, _percentage, _id, _good, _ok, _bad);
   }
 
   void changePage(int value) async {
@@ -113,8 +113,9 @@ class FlipFaceCardState extends State<FlipFaceCard> {
             context,
             PageTransition(
                 type: PageTransitionType.fade,
-                //   child: LineChartWidget(_deckNum, _id)),
+                // child: LineChartWidget(_deckNum, _id)),
                 child: DisplayPage(_deckNum, _id)),
+            //child: TestPage(),
           );
         });
         // Navigator.pushReplacement(
@@ -191,8 +192,9 @@ class FlipFaceCardState extends State<FlipFaceCard> {
     super.initState();
     loadCards().then((value) {
       cardList.map((item) {
-        _questions.insert(0, item.questions);
-        _answers.insert(0, item.answers);
+        _cardId.insert(0, item.id);
+        _questions.insert(0, item.question);
+        _answers.insert(0, item.answer);
         _confidence.insert(0, item.confidence);
         print("in questions is:$_questions");
         print("in answer is $_answers");

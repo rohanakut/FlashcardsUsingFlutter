@@ -1,27 +1,21 @@
-import 'package:flashcards/cards/new_card_back.dart';
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
-import 'package:flashcards/deck_inside/show_cards.dart';
-import 'package:flashcards/drawer/drawer_for_page.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-import 'package:flashcards/database/models/cards.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 
 class NewCard extends StatefulWidget {
-  int _deckNum;
-  int _id;
+  String _deckNum, _id;
   NewCard(this._deckNum, this._id);
 
   NewCardState createState() => new NewCardState(_deckNum, _id);
 }
 
 class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
-  int _deckNum;
-  int _id, _check, _selected = 0;
+  String _deckNum, _id;
+  int _check, _selected = 0;
+  AmplifyDb amplifyObj = AmplifyDb();
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
   NewCardState(this._deckNum, this._id);
@@ -32,8 +26,9 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
   DatabaseHelper databaseHelper = DatabaseHelper();
 
   void _addCard(String _question, String _answer) async {
-    _check = await databaseHelper
-        .insertCard(Cards(_question, _answer, _deckNum, 3, _id));
+    // _check = await databaseHelper
+    //     .insertCard(Cards(_question, _answer, _deckNum, 3, _id));
+    _check = await amplifyObj.addCardData(_question, _answer, 3, _deckNum, _id);
     print(_check);
   }
 
@@ -142,7 +137,7 @@ class NewCardState extends State<NewCard> with SingleTickerProviderStateMixin {
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                             width: 60,
                             height: 60,
-                            child: Icon(Icons.save,size: 40),
+                            child: Icon(Icons.save, size: 40),
 
                             // child: Align(
                             //     alignment: Alignment.bottomRight,

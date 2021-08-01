@@ -2,22 +2,24 @@ import 'package:flashcards/chart/daily_progress.dart';
 import 'package:flashcards/chart/daily_progress_chart.dart';
 import 'package:flashcards/chart/today_progress.dart';
 import 'package:flashcards/chart/today_progress_chart.dart';
+import 'package:flashcards/database/amplify_db.dart';
+import 'package:flashcards/models/ModelProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/chart.dart';
 
 class DisplayPage extends StatefulWidget {
-  int _deckNum, _id;
+  String _deckNum, _id;
   DisplayPage(this._deckNum, this._id);
   DisplayPageState createState() =>
       new DisplayPageState(this._deckNum, this._id);
 }
 
 class DisplayPageState extends State<DisplayPage> {
-  int _deckNum, _id;
+  String _deckNum, _id;
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<Chart> chartList;
+  List<ChartListTable> chartList;
   List<double> _listAdd = [];
   // List<FlSpot> _listAdd = [];
   List<double> _percentage = [];
@@ -30,9 +32,10 @@ class DisplayPageState extends State<DisplayPage> {
   List<DailyProgress> data1 = [];
   List<double> _percentageToDisplay;
   DisplayPageState(this._deckNum, this._id);
+  AmplifyDb amplifyObj = AmplifyDb();
 
   Future<List<Chart>> _getData() async {
-    chartList = await databaseHelper.getChartList(_deckNum, _id);
+    chartList = await amplifyObj.getChartList(_deckNum, _id);
     print("length is in chart ${chartList.length}");
     chartList.map((item) => _percentage.insert(0, item.percentage)).toList();
     chartList.map((item) => _good.insert(0, item.good)).toList();

@@ -8,13 +8,13 @@ import 'package:flip_card/flip_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReviewTutorial extends StatefulWidget {
-  int _id;
+  String _id;
   ReviewTutorial(this._id);
   ReviewTutorialState createState() => new ReviewTutorialState(_id);
 }
 
 class ReviewTutorialState extends State<ReviewTutorial> {
-  int _id;
+  String _id;
   SharedPreferences checkUser;
   ReviewTutorialState(this._id);
   GlobalKey<ReviewTutorialState> cardKey = GlobalKey<ReviewTutorialState>();

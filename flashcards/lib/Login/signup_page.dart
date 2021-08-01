@@ -1,4 +1,5 @@
 import 'package:flashcards/Login/login_page.dart';
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcards/database/models/login.dart';
@@ -15,6 +16,7 @@ class SignupPageState extends State<SignupPage> {
   TextEditingController _reEnterPwd = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   DatabaseHelper databaseHelper = DatabaseHelper();
+  AmplifyDb amplifyObj = AmplifyDb();
   bool _validate = false;
   bool _validateReEnteredPwd = false;
   bool _validatePwd = false;
@@ -128,11 +130,11 @@ class SignupPageState extends State<SignupPage> {
                           !(_pwdAdd.text.isEmpty) &&
                           !(_reEnterPwd.text.isEmpty)) {
                         // checkUser.setBool('firstTime', true);
-                        _check = await databaseHelper
-                            .insertNote(Login(_userAdd.text, _pwdAdd.text));
-                        print(_check);
-                        loginList = await databaseHelper.getNoteList();
-                        loginList.map((item) => print(item.userName)).toList();
+                        _check = await amplifyObj.addLoginData(
+                            _userAdd.text, _pwdAdd.text);
+                        print("Signup page data:$_check");
+                        //loginList = await databaseHelper.getNoteList();
+                        //loginList.map((item) => print(item.userName)).toList();
                         Navigator.pop(
                           context,
                           PageTransition(

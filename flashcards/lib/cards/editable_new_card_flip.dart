@@ -1,3 +1,4 @@
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
@@ -5,8 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:flashcards/deck_inside/show_cards.dart';
 
 class EditableNewCardFlip extends StatefulWidget {
-  String _question, _answer;
-  int _deckNum, _id, _cardId;
+  String _question, _answer, _deckNum, _cardId, _id;
 
   EditableNewCardFlip(
       this._question, this._answer, this._deckNum, this._id, this._cardId);
@@ -16,8 +16,7 @@ class EditableNewCardFlip extends StatefulWidget {
 
 class EditableNewCardFlipState extends State<EditableNewCardFlip>
     with SingleTickerProviderStateMixin {
-  String _question, _answer;
-  int _deckNum, _id, _cardId;
+  String _question, _answer, _deckNum, _cardId, _id;
   TextEditingController _cardEditFace = TextEditingController();
   TextEditingController _cardEditBack = TextEditingController();
   DatabaseHelper databaseHelper = DatabaseHelper();
@@ -29,6 +28,7 @@ class EditableNewCardFlipState extends State<EditableNewCardFlip>
   Animation _animation;
   AnimationStatus _animationStatus = AnimationStatus.dismissed;
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
+  AmplifyDb amplifyObj = AmplifyDb();
 
   void initState() {
     super.initState();
@@ -55,8 +55,8 @@ class EditableNewCardFlipState extends State<EditableNewCardFlip>
   }
 
   void _updateCard() async {
-    int _check = await databaseHelper
-        .updateCard(_cardId, _cardEditFace.text, _cardEditBack.text)
+    int _check = await amplifyObj
+        .updateCardData(_cardId, _cardEditFace.text, _cardEditBack.text)
         .then((value) {
       Navigator.pushReplacement(
         context,

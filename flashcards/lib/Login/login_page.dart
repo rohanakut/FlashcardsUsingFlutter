@@ -1,7 +1,9 @@
 import 'package:flashcards/Login/signup_page.dart';
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
 import 'package:flashcards/database/models/login.dart';
 import 'package:flashcards/decks/deck_list.dart';
+import 'package:flashcards/models/ModelProvider.dart';
 import 'package:flashcards/tutorial/deck_list_tutorial.dart';
 import 'package:flashcards/tutorial/introduction_screen_tutorial.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,8 @@ class LoginPageState extends State<LoginPage> {
   String _pwd;
   bool _validate = false;
   bool _validatePwd = false;
-  List<Map<String, dynamic>> check;
+  List<LoginTable> check;
+  AmplifyDb amplifyObj = AmplifyDb();
   //List<Login> check;
 
   void addToList() {
@@ -116,9 +119,8 @@ class LoginPageState extends State<LoginPage> {
                     onPressed: () async {
                       // addToList();
                       // pwdList();
-                      print(_userAdd.text);
-                      print(_pwdAdd.text);
-                      check = await databaseHelper.checkLogin(
+
+                      check = await amplifyObj.checkLogin(
                           _userAdd.text, _pwdAdd.text);
                       print("the reurned length is:${check.length}");
                       check_if_exists().then((value) {
@@ -127,7 +129,7 @@ class LoginPageState extends State<LoginPage> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              child: IntroductionScreenTutorial(check[0]['id']),
+                              child: IntroductionScreenTutorial(check[0].id),
                             ),
                           );
                         } else {
@@ -141,7 +143,7 @@ class LoginPageState extends State<LoginPage> {
                               context,
                               PageTransition(
                                 type: PageTransitionType.fade,
-                                child: DeckList(check[0]['id']),
+                                child: DeckList(check[0].id),
                               ),
                             );
                           } else if (check.length <= 0) {

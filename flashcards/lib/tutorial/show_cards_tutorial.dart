@@ -6,13 +6,13 @@ import 'dart:async';
 import 'package:page_transition/page_transition.dart';
 
 class ShowCardsTutorial extends StatefulWidget {
-  int _id;
+  String _id;
   ShowCardsTutorial(this._id);
   ShowCardsTutorialState createState() => new ShowCardsTutorialState(_id);
 }
 
 class ShowCardsTutorialState extends State<ShowCardsTutorial> {
-  int _id;
+  String _id;
   ShowCardsTutorialState(this._id);
   Intro intro = Intro(
     stepCount: 3,

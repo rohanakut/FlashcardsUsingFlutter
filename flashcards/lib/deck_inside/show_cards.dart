@@ -1,19 +1,17 @@
 import 'package:flashcards/cards/editable_face_card.dart';
-import 'package:flashcards/cards/face_card.dart';
-import 'package:flashcards/cards/flip_card_new.dart';
 import 'package:flashcards/cards/flip_face_card.dart';
 import 'package:flashcards/cards/new_card.dart';
+import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
-import 'package:flashcards/database/models/cards.dart';
 import 'package:flashcards/drawer/drawer_for_page.dart';
+import 'package:flashcards/models/CardsListTable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ShowCards extends StatefulWidget {
   List<String> _questions = [];
-  int _deckNum;
-  int _id;
+  String _deckNum, _id;
   // ShowCards(this._questions);
   ShowCards(this._deckNum, this._id);
   ShowCardsState createState() => new ShowCardsState(_deckNum, _id);
@@ -24,18 +22,17 @@ class ShowCardsState extends State<ShowCards> {
   ShowCardsState(this._deckNum, this._id);
   List<String> _questions = [];
   List<String> _answers = [];
+  List<CardsListTable> cardList;
+  AmplifyDb amplifyObj = AmplifyDb();
   List<Color> cardColor = [
     Color(0xffd0c3f7),
     Color(0xFFb7ecef),
     Color(0xFFedcaf8)
   ];
-  List<int> _cardId = [];
+  List<String> _cardId = [];
   int i;
-  int _id;
-  int _deckNum;
+  String _deckNum, _id;
   Color _color = Colors.white;
-
-  List<Cards> cardList;
 
   void _addCard() async {
     Navigator.push(
@@ -50,12 +47,13 @@ class ShowCardsState extends State<ShowCards> {
       _answers = [];
       _cardId = [];
       //cardList.clear();
-      cardList = await databaseHelper.getCardList(_deckNum, _id);
+      //cardList = await databaseHelper.getCardList(_deckNum, _id);
+      cardList = await amplifyObj.getAllCardData(_deckNum, _id);
       cardList.map((item) {
-        _questions.insert(0, item.questions);
+        _questions.insert(0, item.question);
       }).toList();
-      cardList.map((item) => _answers.insert(0, item.answers)).toList();
-      cardList.map((item) => _cardId.insert(0, item.cardid)).toList();
+      cardList.map((item) => _answers.insert(0, item.answer)).toList();
+      cardList.map((item) => _cardId.insert(0, item.id)).toList();
       _questions = _questions.reversed.toList();
       _answers = _answers.reversed.toList();
       _cardId = _cardId.reversed.toList();
@@ -67,9 +65,10 @@ class ShowCardsState extends State<ShowCards> {
     });
   }
 
-  Future<List<Cards>> loadCards() async {
+  Future<List<CardsListTable>> loadCards() async {
     print("deck num is $_deckNum");
-    cardList = await databaseHelper.getCardList(_deckNum, _id);
+    cardList = await amplifyObj.getAllCardData(_deckNum, _id);
+    //cardList = await databaseHelper.getCardList(_deckNum, _id);
     print("length is : ${cardList.length}");
     //cardList.map((item) => _questions.insert(0, item.questions)).toList();
     return cardList;
@@ -80,11 +79,11 @@ class ShowCardsState extends State<ShowCards> {
     super.initState();
     loadCards().then((value) {
       cardList.map((item) {
-        _questions.insert(0, item.questions);
+        _questions.insert(0, item.question);
         //  print("in questions is:$_questions");
       }).toList();
-      cardList.map((item) => _answers.insert(0, item.answers)).toList();
-      cardList.map((item) => _cardId.insert(0, item.cardid)).toList();
+      cardList.map((item) => _answers.insert(0, item.answer)).toList();
+      cardList.map((item) => _cardId.insert(0, item.id)).toList();
       _questions = _questions.reversed.toList();
       _answers = _answers.reversed.toList();
       _cardId = _cardId.reversed.toList();
@@ -201,16 +200,16 @@ class ShowCardsState extends State<ShowCards> {
 
                                     setState(() {
                                       cardList.map((item) {
-                                        _questions.insert(0, item.questions);
+                                        _questions.insert(0, item.question);
                                         //  print("in questions is:$_questions");
                                       }).toList();
                                       cardList
                                           .map((item) =>
-                                              _answers.insert(0, item.answers))
+                                              _answers.insert(0, item.answer))
                                           .toList();
                                       cardList
                                           .map((item) =>
-                                              _cardId.insert(0, item.cardid))
+                                              _cardId.insert(0, item.id))
                                           .toList();
                                       _questions = _questions.reversed.toList();
                                       _answers = _answers.reversed.toList();
@@ -301,7 +300,6 @@ class ShowCardsState extends State<ShowCards> {
                                   textAlign: TextAlign.center)),
                         ),
                         onTap: () {
-                          print("in ere");
                           Navigator.push(
                             context,
                             PageTransition(
