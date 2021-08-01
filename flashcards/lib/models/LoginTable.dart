@@ -40,14 +40,14 @@ class LoginTable extends Model {
 
   const LoginTable._internal(
       {@required this.id,
-      this.userName,
+      @required this.userName,
       this.Password,
       this.DeckListTables,
       this.CardsListTables});
 
   factory LoginTable(
       {String id,
-      String userName,
+      @required String userName,
       String Password,
       List<DeckListTable> DeckListTables,
       List<CardsListTable> CardsListTables}) {
@@ -162,7 +162,7 @@ class LoginTable extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: LoginTable.USERNAME,
-        isRequired: false,
+        isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

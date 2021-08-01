@@ -27,8 +27,8 @@ class DeckListTable extends Model {
   final String id;
   final String deckName;
   final List<CardsListTable> CardsLists;
+  final List<ChartListTable> ChartDeckList;
   final String logintableID;
-  final ChartListTable ChartDeckList;
 
   @override
   getInstanceType() => classType;
@@ -42,23 +42,25 @@ class DeckListTable extends Model {
       {@required this.id,
       this.deckName,
       this.CardsLists,
-      this.logintableID,
-      this.ChartDeckList});
+      this.ChartDeckList,
+      this.logintableID});
 
   factory DeckListTable(
       {String id,
       String deckName,
       List<CardsListTable> CardsLists,
-      String logintableID,
-      ChartListTable ChartDeckList}) {
+      List<ChartListTable> ChartDeckList,
+      String logintableID}) {
     return DeckListTable._internal(
         id: id == null ? UUID.getUUID() : id,
         deckName: deckName,
         CardsLists: CardsLists != null
             ? List<CardsListTable>.unmodifiable(CardsLists)
             : CardsLists,
-        logintableID: logintableID,
-        ChartDeckList: ChartDeckList);
+        ChartDeckList: ChartDeckList != null
+            ? List<ChartListTable>.unmodifiable(ChartDeckList)
+            : ChartDeckList,
+        logintableID: logintableID);
   }
 
   bool equals(Object other) {
@@ -72,8 +74,8 @@ class DeckListTable extends Model {
         id == other.id &&
         deckName == other.deckName &&
         DeepCollectionEquality().equals(CardsLists, other.CardsLists) &&
-        logintableID == other.logintableID &&
-        ChartDeckList == other.ChartDeckList;
+        DeepCollectionEquality().equals(ChartDeckList, other.ChartDeckList) &&
+        logintableID == other.logintableID;
   }
 
   @override
@@ -86,9 +88,7 @@ class DeckListTable extends Model {
     buffer.write("DeckListTable {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("deckName=" + "$deckName" + ", ");
-    buffer.write("logintableID=" + "$logintableID" + ", ");
-    buffer.write("ChartDeckList=" +
-        (ChartDeckList != null ? ChartDeckList.toString() : "null"));
+    buffer.write("logintableID=" + "$logintableID");
     buffer.write("}");
 
     return buffer.toString();
@@ -98,14 +98,14 @@ class DeckListTable extends Model {
       {String id,
       String deckName,
       List<CardsListTable> CardsLists,
-      String logintableID,
-      ChartListTable ChartDeckList}) {
+      List<ChartListTable> ChartDeckList,
+      String logintableID}) {
     return DeckListTable(
         id: id ?? this.id,
         deckName: deckName ?? this.deckName,
         CardsLists: CardsLists ?? this.CardsLists,
-        logintableID: logintableID ?? this.logintableID,
-        ChartDeckList: ChartDeckList ?? this.ChartDeckList);
+        ChartDeckList: ChartDeckList ?? this.ChartDeckList,
+        logintableID: logintableID ?? this.logintableID);
   }
 
   DeckListTable.fromJson(Map<String, dynamic> json)
@@ -117,18 +117,20 @@ class DeckListTable extends Model {
                     CardsListTable.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        logintableID = json['logintableID'],
-        ChartDeckList = json['ChartDeckList'] != null
-            ? ChartListTable.fromJson(
-                new Map<String, dynamic>.from(json['ChartDeckList']))
-            : null;
+        ChartDeckList = json['ChartDeckList'] is List
+            ? (json['ChartDeckList'] as List)
+                .map((e) =>
+                    ChartListTable.fromJson(new Map<String, dynamic>.from(e)))
+                .toList()
+            : null,
+        logintableID = json['logintableID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'deckName': deckName,
         'CardsLists': CardsLists?.map((e) => e?.toJson())?.toList(),
-        'logintableID': logintableID,
-        'ChartDeckList': ChartDeckList?.toJson()
+        'ChartDeckList': ChartDeckList?.map((e) => e?.toJson())?.toList(),
+        'logintableID': logintableID
       };
 
   static final QueryField ID = QueryField(fieldName: "deckListTable.id");
@@ -137,11 +139,11 @@ class DeckListTable extends Model {
       fieldName: "CardsLists",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (CardsListTable).toString()));
-  static final QueryField LOGINTABLEID = QueryField(fieldName: "logintableID");
   static final QueryField CHARTDECKLIST = QueryField(
       fieldName: "ChartDeckList",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (ChartListTable).toString()));
+  static final QueryField LOGINTABLEID = QueryField(fieldName: "logintableID");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "DeckListTable";
@@ -169,16 +171,16 @@ class DeckListTable extends Model {
         ofModelName: (CardsListTable).toString(),
         associatedKey: CardsListTable.DECKLISTTABLEID));
 
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: DeckListTable.CHARTDECKLIST,
+        isRequired: false,
+        ofModelName: (ChartListTable).toString(),
+        associatedKey: ChartListTable.DECKLISTTABLEID));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: DeckListTable.LOGINTABLEID,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: DeckListTable.CHARTDECKLIST,
-        isRequired: false,
-        targetName: "deckListTableChartDeckListId",
-        ofModelName: (ChartListTable).toString()));
   });
 }
 

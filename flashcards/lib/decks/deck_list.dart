@@ -174,7 +174,7 @@ class DeckListState extends State<DeckList>
       child: Text("Yes"),
       onPressed: () {
         print("Deck List id is: $id");
-        amplifyObj.deleteDeckData(id).then((value) => setState(() {}));
+        //amplifyObj.deleteDeckData(id).then((value) => setState(() {}));
         Navigator.of(context).pop();
       },
     );

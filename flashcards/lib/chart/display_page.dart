@@ -34,7 +34,7 @@ class DisplayPageState extends State<DisplayPage> {
   DisplayPageState(this._deckNum, this._id);
   AmplifyDb amplifyObj = AmplifyDb();
 
-  Future<List<Chart>> _getData() async {
+  Future<List<ChartListTable>> _getData() async {
     chartList = await amplifyObj.getChartList(_deckNum, _id);
     print("length is in chart ${chartList.length}");
     chartList.map((item) => _percentage.insert(0, item.percentage)).toList();
@@ -69,10 +69,10 @@ class DisplayPageState extends State<DisplayPage> {
     data = [];
     super.initState();
     _getData().then((value) {
-      print("in here in charts");
-      print("good length is ${_good[0]}");
-      print("ok length is ${_ok[0]}");
-      print("bad length is ${_bad[0]}");
+      // print("in here in charts");
+      // print("good length is ${_good[0]}");
+      // print("ok length is ${_ok[0]}");
+      // print("bad length is ${_bad[0]}");
       if (_good.length != 0) _goodNum = _good[0];
       if (_ok.length != 0) _okNum = _ok[0];
       if (_bad.length != 0) _badNum = _bad[0];

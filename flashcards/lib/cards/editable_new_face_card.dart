@@ -1,7 +1,6 @@
 import 'package:flashcards/cards/editable_new_answer_card.dart';
 import 'package:flashcards/database/amplify_db.dart';
 import 'package:flashcards/database/connection/database_helper.dart';
-import 'package:flashcards/database/models/cards.dart';
 import 'package:flashcards/deck_inside/show_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';

@@ -93,9 +93,7 @@ class FlipFaceCardState extends State<FlipFaceCard> {
 
     //print("check is: $_check");
     double _percentage = (count / _confidence.length);
-    print(_good);
-    print(_ok);
-    print(_bad);
+
     await amplifyObj.insertChart(_deckNum, _percentage, _id, _good, _ok, _bad);
   }
 

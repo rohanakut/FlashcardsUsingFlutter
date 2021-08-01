@@ -1,5 +1,9 @@
 import 'package:amplify_flutter/amplify.dart';
+import 'package:flashcards/models/ChartListTable.dart';
 import 'package:flashcards/models/ModelProvider.dart';
+import 'package:flashcards/models/CardsListTable.dart';
+import 'package:flashcards/models/DeckListTable.dart';
+import 'package:flashcards/models/LoginTable.dart';
 
 class AmplifyDb {
   Future addDeckData(String deckname, String id) async {
@@ -69,36 +73,41 @@ class AmplifyDb {
         decklisttableID: deckNum));
   }
 
-  Future <List<CardsListTable>>getCardDataForReview(String deckId, String id)async{
+  Future<List<CardsListTable>> getCardDataForReview(
+      String deckId, String id) async {
     List<CardsListTable> chatData = await Amplify.DataStore.query(
         CardsListTable.classType,
         where: CardsListTable.DECKLISTTABLEID
             .eq(deckId)
             .and(CardsListTable.LOGINTABLEID.eq(id)));
+    chatData.shuffle();
     return chatData;
   }
 
   Future insertChart(String deckNum, double percentage, String id, int good,
       int ok, int bad) async {
     ChartListTable newPost = ChartListTable(
-        percentage: percentage,
-        good: good,
-        bad: bad,
-        ok: ok,
-        cardslisttableID: id);
+      percentage: percentage,
+      good: good,
+      bad: bad,
+      ok: ok,
+      decklisttableID: deckNum,
+    );
     await Amplify.DataStore.save(newPost);
   }
 
-  Future<List<ChartListTable>> getChartList(String deckId, String id)async{
+  Future<List<ChartListTable>> getChartList(String deckId, String id) async {
     List<ChartListTable> chatData = await Amplify.DataStore.query(
         ChartListTable.classType,
-        where: ChartListTable.
-            .eq(deckId)
-            .and(CardsListTable.LOGINTABLEID.eq(id)));
+        where: ChartListTable.DECKLISTTABLEID.eq(deckId));
+    return chatData;
   }
-  Future<LoginTable> addLoginData(String username, String password) async {
+
+  Future<int> addLoginData(String username, String password) async {
+    int result = -1;
     LoginTable login = LoginTable(userName: username, Password: password);
-    return login;
+    await Amplify.DataStore.save(login).then((value) => result = 0);
+    return result;
   }
 
   Future<List<LoginTable>> checkLogin(String username, String password) async {

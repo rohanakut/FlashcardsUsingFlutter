@@ -15,9 +15,7 @@
 
 // ignore_for_file: public_member_api_docs
 
-import 'ModelProvider.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 /** This is an auto generated class representing the CardsListTable type in your schema. */
@@ -29,7 +27,6 @@ class CardsListTable extends Model {
   final String answer;
   final int confidence;
   final String logintableID;
-  final List<ChartListTable> ChartChartList;
   final String decklisttableID;
 
   @override
@@ -46,7 +43,6 @@ class CardsListTable extends Model {
       this.answer,
       this.confidence,
       this.logintableID,
-      this.ChartChartList,
       this.decklisttableID});
 
   factory CardsListTable(
@@ -55,7 +51,6 @@ class CardsListTable extends Model {
       String answer,
       int confidence,
       String logintableID,
-      List<ChartListTable> ChartChartList,
       String decklisttableID}) {
     return CardsListTable._internal(
         id: id == null ? UUID.getUUID() : id,
@@ -63,9 +58,6 @@ class CardsListTable extends Model {
         answer: answer,
         confidence: confidence,
         logintableID: logintableID,
-        ChartChartList: ChartChartList != null
-            ? List<ChartListTable>.unmodifiable(ChartChartList)
-            : ChartChartList,
         decklisttableID: decklisttableID);
   }
 
@@ -82,7 +74,6 @@ class CardsListTable extends Model {
         answer == other.answer &&
         confidence == other.confidence &&
         logintableID == other.logintableID &&
-        DeepCollectionEquality().equals(ChartChartList, other.ChartChartList) &&
         decklisttableID == other.decklisttableID;
   }
 
@@ -113,7 +104,6 @@ class CardsListTable extends Model {
       String answer,
       int confidence,
       String logintableID,
-      List<ChartListTable> ChartChartList,
       String decklisttableID}) {
     return CardsListTable(
         id: id ?? this.id,
@@ -121,7 +111,6 @@ class CardsListTable extends Model {
         answer: answer ?? this.answer,
         confidence: confidence ?? this.confidence,
         logintableID: logintableID ?? this.logintableID,
-        ChartChartList: ChartChartList ?? this.ChartChartList,
         decklisttableID: decklisttableID ?? this.decklisttableID);
   }
 
@@ -131,12 +120,6 @@ class CardsListTable extends Model {
         answer = json['answer'],
         confidence = json['confidence'],
         logintableID = json['logintableID'],
-        ChartChartList = json['ChartChartList'] is List
-            ? (json['ChartChartList'] as List)
-                .map((e) =>
-                    ChartListTable.fromJson(new Map<String, dynamic>.from(e)))
-                .toList()
-            : null,
         decklisttableID = json['decklisttableID'];
 
   Map<String, dynamic> toJson() => {
@@ -145,7 +128,6 @@ class CardsListTable extends Model {
         'answer': answer,
         'confidence': confidence,
         'logintableID': logintableID,
-        'ChartChartList': ChartChartList?.map((e) => e?.toJson())?.toList(),
         'decklisttableID': decklisttableID
       };
 
@@ -154,10 +136,6 @@ class CardsListTable extends Model {
   static final QueryField ANSWER = QueryField(fieldName: "answer");
   static final QueryField CONFIDENCE = QueryField(fieldName: "confidence");
   static final QueryField LOGINTABLEID = QueryField(fieldName: "logintableID");
-  static final QueryField CHARTCHARTLIST = QueryField(
-      fieldName: "ChartChartList",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ChartListTable).toString()));
   static final QueryField DECKLISTTABLEID =
       QueryField(fieldName: "decklisttableID");
   static var schema =
@@ -195,12 +173,6 @@ class CardsListTable extends Model {
         key: CardsListTable.LOGINTABLEID,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: CardsListTable.CHARTCHARTLIST,
-        isRequired: false,
-        ofModelName: (ChartListTable).toString(),
-        associatedKey: ChartListTable.CARDSLISTTABLEID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: CardsListTable.DECKLISTTABLEID,

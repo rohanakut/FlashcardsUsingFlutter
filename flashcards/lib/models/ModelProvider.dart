@@ -28,7 +28,7 @@ export 'LoginTable.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "d65544ffe7408a5fe50ff918f00e241b";
+  String version = "6675c5758691a64854145422a09b4db3";
   @override
   List<ModelSchema> modelSchemas = [
     CardsListTable.schema,

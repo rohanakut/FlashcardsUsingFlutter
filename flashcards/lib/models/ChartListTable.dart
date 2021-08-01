@@ -27,7 +27,7 @@ class ChartListTable extends Model {
   final int ok;
   final int bad;
   final double percentage;
-  final String cardslisttableID;
+  final String decklisttableID;
 
   @override
   getInstanceType() => classType;
@@ -43,7 +43,7 @@ class ChartListTable extends Model {
       this.ok,
       this.bad,
       this.percentage,
-      this.cardslisttableID});
+      this.decklisttableID});
 
   factory ChartListTable(
       {String id,
@@ -51,14 +51,14 @@ class ChartListTable extends Model {
       int ok,
       int bad,
       double percentage,
-      String cardslisttableID}) {
+      String decklisttableID}) {
     return ChartListTable._internal(
         id: id == null ? UUID.getUUID() : id,
         good: good,
         ok: ok,
         bad: bad,
         percentage: percentage,
-        cardslisttableID: cardslisttableID);
+        decklisttableID: decklisttableID);
   }
 
   bool equals(Object other) {
@@ -74,7 +74,7 @@ class ChartListTable extends Model {
         ok == other.ok &&
         bad == other.bad &&
         percentage == other.percentage &&
-        cardslisttableID == other.cardslisttableID;
+        decklisttableID == other.decklisttableID;
   }
 
   @override
@@ -92,7 +92,7 @@ class ChartListTable extends Model {
     buffer.write("percentage=" +
         (percentage != null ? percentage.toString() : "null") +
         ", ");
-    buffer.write("cardslisttableID=" + "$cardslisttableID");
+    buffer.write("decklisttableID=" + "$decklisttableID");
     buffer.write("}");
 
     return buffer.toString();
@@ -104,14 +104,14 @@ class ChartListTable extends Model {
       int ok,
       int bad,
       double percentage,
-      String cardslisttableID}) {
+      String decklisttableID}) {
     return ChartListTable(
         id: id ?? this.id,
         good: good ?? this.good,
         ok: ok ?? this.ok,
         bad: bad ?? this.bad,
         percentage: percentage ?? this.percentage,
-        cardslisttableID: cardslisttableID ?? this.cardslisttableID);
+        decklisttableID: decklisttableID ?? this.decklisttableID);
   }
 
   ChartListTable.fromJson(Map<String, dynamic> json)
@@ -120,7 +120,7 @@ class ChartListTable extends Model {
         ok = json['ok'],
         bad = json['bad'],
         percentage = json['percentage'],
-        cardslisttableID = json['cardslisttableID'];
+        decklisttableID = json['decklisttableID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -128,7 +128,7 @@ class ChartListTable extends Model {
         'ok': ok,
         'bad': bad,
         'percentage': percentage,
-        'cardslisttableID': cardslisttableID
+        'decklisttableID': decklisttableID
       };
 
   static final QueryField ID = QueryField(fieldName: "chartListTable.id");
@@ -136,8 +136,8 @@ class ChartListTable extends Model {
   static final QueryField OK = QueryField(fieldName: "ok");
   static final QueryField BAD = QueryField(fieldName: "bad");
   static final QueryField PERCENTAGE = QueryField(fieldName: "percentage");
-  static final QueryField CARDSLISTTABLEID =
-      QueryField(fieldName: "cardslisttableID");
+  static final QueryField DECKLISTTABLEID =
+      QueryField(fieldName: "decklisttableID");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ChartListTable";
@@ -175,7 +175,7 @@ class ChartListTable extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.double)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ChartListTable.CARDSLISTTABLEID,
+        key: ChartListTable.DECKLISTTABLEID,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

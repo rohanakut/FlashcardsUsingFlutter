@@ -113,20 +113,7 @@ class DatabaseHelper {
     return result;
   }
 
-  Future addDeckData(
-    String deckname,
-  ) async {
-    DeckListTable newPost = DeckListTable(deckName: deckname, CardsLists: []);
-    await Amplify.DataStore.save(newPost)
-        .then((value) => print("data sent to aws"));
-  }
-
-  Future<List<DeckListTable>> getAllChatData() async {
-    List<DeckListTable> chatData =
-        await Amplify.DataStore.query(DeckListTable.classType);
-    print(chatData);
-    return chatData;
-  }
+  
 
   Future<int> updateConfidence(Cards card) async {
     var db = await this.database;
