@@ -46,7 +46,7 @@ class AmplifyDb {
         confidence: conf,
         decklisttableID: deckNum,
         logintableID: id);
-        await Amplify.DataStore.save(newPost)
+    await Amplify.DataStore.save(newPost);
   }
 
   Future updateCardData(String id, String question, String ans) async {
@@ -57,8 +57,44 @@ class AmplifyDb {
         deck.copyWith(answer: ans, question: question));
   }
 
-  Future insertChart(String deckNum, double percentage, String id, int good, int ok, int bad)async{
+  Future updateConfidenceData(String id, String question, String answer,
+      int confidence, String deckNum) async {
+    CardsListTable deck = (await Amplify.DataStore.query(
+        CardsListTable.classType,
+        where: CardsListTable.ID.eq(id)))[0];
+    await Amplify.DataStore.save(deck.copyWith(
+        answer: answer,
+        question: question,
+        confidence: confidence,
+        decklisttableID: deckNum));
+  }
 
+  Future <List<CardsListTable>>getCardDataForReview(String deckId, String id)async{
+    List<CardsListTable> chatData = await Amplify.DataStore.query(
+        CardsListTable.classType,
+        where: CardsListTable.DECKLISTTABLEID
+            .eq(deckId)
+            .and(CardsListTable.LOGINTABLEID.eq(id)));
+    return chatData;
+  }
+
+  Future insertChart(String deckNum, double percentage, String id, int good,
+      int ok, int bad) async {
+    ChartListTable newPost = ChartListTable(
+        percentage: percentage,
+        good: good,
+        bad: bad,
+        ok: ok,
+        cardslisttableID: id);
+    await Amplify.DataStore.save(newPost);
+  }
+
+  Future<List<ChartListTable>> getChartList(String deckId, String id)async{
+    List<ChartListTable> chatData = await Amplify.DataStore.query(
+        ChartListTable.classType,
+        where: ChartListTable.
+            .eq(deckId)
+            .and(CardsListTable.LOGINTABLEID.eq(id)));
   }
   Future<LoginTable> addLoginData(String username, String password) async {
     LoginTable login = LoginTable(userName: username, Password: password);
