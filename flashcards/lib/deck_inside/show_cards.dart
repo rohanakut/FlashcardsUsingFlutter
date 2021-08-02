@@ -12,7 +12,6 @@ import 'package:page_transition/page_transition.dart';
 class ShowCards extends StatefulWidget {
   List<String> _questions = [];
   String _deckNum, _id;
-  // ShowCards(this._questions);
   ShowCards(this._deckNum, this._id);
   ShowCardsState createState() => new ShowCardsState(_deckNum, _id);
 }
@@ -22,7 +21,7 @@ class ShowCardsState extends State<ShowCards> {
   ShowCardsState(this._deckNum, this._id);
   List<String> _questions = [];
   List<String> _answers = [];
-  List<CardsListTable> cardList;
+  List<CardsListTable> cardList = [];
   AmplifyDb amplifyObj = AmplifyDb();
   List<Color> cardColor = [
     Color(0xffd0c3f7),
@@ -39,15 +38,12 @@ class ShowCardsState extends State<ShowCards> {
       context,
       PageTransition(
         type: PageTransitionType.fade,
-        //child: FlipCardNew(_deckNum, _id),
         child: NewCard(_deckNum, _id),
       ),
     ).then((value) async {
       _questions = [];
       _answers = [];
       _cardId = [];
-      //cardList.clear();
-      //cardList = await databaseHelper.getCardList(_deckNum, _id);
       cardList = await amplifyObj.getAllCardData(_deckNum, _id);
       cardList.map((item) {
         _questions.insert(0, item.question);
@@ -57,20 +53,12 @@ class ShowCardsState extends State<ShowCards> {
       _questions = _questions.reversed.toList();
       _answers = _answers.reversed.toList();
       _cardId = _cardId.reversed.toList();
-      print("in func $_questions");
-      print("in func $_answers");
-      print("in func $_cardId");
-      //print("the rendered list is: $_questions");
       setState(() {});
     });
   }
 
   Future<List<CardsListTable>> loadCards() async {
-    print("deck num is $_deckNum");
     cardList = await amplifyObj.getAllCardData(_deckNum, _id);
-    //cardList = await databaseHelper.getCardList(_deckNum, _id);
-    print("length is : ${cardList.length}");
-    //cardList.map((item) => _questions.insert(0, item.questions)).toList();
     return cardList;
   }
 
@@ -80,7 +68,6 @@ class ShowCardsState extends State<ShowCards> {
     loadCards().then((value) {
       cardList.map((item) {
         _questions.insert(0, item.question);
-        //  print("in questions is:$_questions");
       }).toList();
       cardList.map((item) => _answers.insert(0, item.answer)).toList();
       cardList.map((item) => _cardId.insert(0, item.id)).toList();
@@ -92,13 +79,7 @@ class ShowCardsState extends State<ShowCards> {
       print("in init state $_cardId");
       setState(() {});
     });
-    //  print("questions is : $_questions");
-
-    //_questions = _questions.reversed.toList();
-    // print("list is: ${cardList[0].questions}");
   }
-
-  //ShowCardsState(this._questions);
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +91,7 @@ class ShowCardsState extends State<ShowCards> {
         title: Text("title"),
       ),
       drawer: DrawerForPage(),
-      body: _questions.length == 0
+      body: cardList.length == 0
           ? Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

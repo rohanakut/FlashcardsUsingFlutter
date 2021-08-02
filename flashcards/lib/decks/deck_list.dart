@@ -48,45 +48,15 @@ class DeckListState extends State<DeckList>
     Color(0xffB7ECEF),
     Color(0xfff8cae8),
   ];
-  // List<Chart> chartList;
-
-  void _showToast() {
-    ft.showToast(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.horizontal(),
-          color: Colors.blue[200],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.check), //change this
-            SizedBox(
-              width: 12.0,
-            ),
-            Text("Deck has been Saved"),
-          ],
-        ),
-      ),
-      gravity: ToastGravity.TOP,
-      toastDuration: Duration(seconds: 2),
-    );
-  }
 
   void addToList() async {
     _to_be_shown.clear();
     List<DeckListTable> deckList = await amplifyObj.getAllDeckData(_id);
     deckList.map((e) => _to_be_shown.insert(0, e.deckName)).toList();
+    deckList.map((e) => deckIDs.insert(0, e.id)).toList();
+    _to_be_shown = _to_be_shown.reversed.toList();
+    deckIDs = deckIDs.reversed.toList();
     print("Deck List: $_to_be_shown");
-    //old code
-    // deckList = await databaseHelper.getDeckList(_id);
-    // deckList.map((item) => _to_be_shown.insert(0, item.deckName)).toList();
-    // _to_be_shown = _to_be_shown.reversed.toList();
-    // print("length is : ${_to_be_shown.length}");
-    // deckList
-    //     .map((item) => print({item.deckName, item.id, item.deckNumber}))
-    //     .toList();
     setState(() {
       _selected = 0;
       listAdd.clear();
@@ -94,7 +64,6 @@ class DeckListState extends State<DeckList>
   }
 
   void loadList() async {
-    //deckList = await databaseHelper.getDeckList(_id);
     List<DeckListTable> deckList = await amplifyObj.getAllDeckData(_id);
     for (int i = 0; i < deckList.length; i++) {
       _to_be_shown.insert(0, deckList[i].deckName);
@@ -104,8 +73,6 @@ class DeckListState extends State<DeckList>
     }
     _to_be_shown = _to_be_shown.reversed.toList();
     deckIDs = deckIDs.reversed.toList();
-    //deckList.map((e) => _to_be_shown.insert(0, e.deckName));
-    //deckList.map((e) => deckIDs.insert(0, e.id));
     print(deckList);
     print(_to_be_shown);
     print(deckIDs);
@@ -124,16 +91,12 @@ class DeckListState extends State<DeckList>
     _to_be_shown.clear();
     _loaded = false;
     super.initState();
-    loadList(); //.then((value) {
-    //_to_be_shown = _to_be_shown.reversed.toList();
-    // });
+    loadList();
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 3));
     _changeHeight = Tween<double>(begin: 0, end: 60).animate(_controller);
     _changeHeight.addListener(() {
-      setState(() {
-        //  print(_changeHeight.value.toString());
-      });
+      setState(() {});
     });
     _controller.forward();
   }
@@ -189,7 +152,7 @@ class DeckListState extends State<DeckList>
     AlertDialog alert = AlertDialog(
       title: Text("You are deleting the Deck"),
       content: Text(
-          "Deleting the deck wou;d delete the deck and the associated cards. Are you sure you want to continue?"),
+          "Deleting the deck would delete the deck and the associated cards. Are you sure you want to continue?"),
       actions: [
         remindButton,
         cancelButton,
@@ -293,15 +256,11 @@ class DeckListState extends State<DeckList>
                                           cF.unfocus();
                                         }
 
-                                        print("List value is: ${listAdd.text}");
                                         if (listAdd.text.isEmpty) {
                                           _form.currentState.validate();
                                         } else {
                                           _check = await amplifyObj.addDeckData(
                                               listAdd.text, _id);
-                                          List<DeckListTable> dummy =
-                                              await amplifyObj
-                                                  .getAllDeckData(_id);
                                           print("check value is : $_check");
                                           addToList();
                                         }
@@ -343,7 +302,8 @@ class DeckListState extends State<DeckList>
                                             ),
                                             child: ListTile(
                                                 onTap: () {
-                                                  print(i);
+                                                  print(
+                                                      "Deck id is:${deckIDs[i]}");
                                                   Navigator.push(
                                                     context,
                                                     PageTransition(
